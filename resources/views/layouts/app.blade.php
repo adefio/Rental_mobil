@@ -20,7 +20,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -35,36 +35,40 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
-                            <div class="dropdown-center">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                            <!-- Data Rental Mobil Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Data Rental Mobil
-                                </button>
-                                <ul class="dropdown-menu">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ url('mobil') }}">Data Mobil</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('mobil/create') }}">Tambah Mobil</a></li>
                                     <li><a class="dropdown-item" href="{{ url('pengguna') }}">Data Pengguna</a></li>
                                     <li><a class="dropdown-item" href="{{ url('pengguna/create') }}">Tambah Pengguna</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"></a></li>
-                                    <li><a class="dropdown-item" href="#"></a></li>
                                 </ul>
-                            </div>
-                            <div class="dropdown-center">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                            </li>
+
+                            <!-- Laporan Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarLaporan" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Laporan
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ url('pengguna/laporan/cetak') }}" target="_blank">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarLaporan">
+                                    <li><a class="dropdown-item" href="{{ url('pengguna/laporan/cetak') }}"
+                                            target="_blank">
                                             Laporan Pengguna</a></li>
-                                    <li><a class="dropdown-item" href="#" target="_blank"></a></li>
+                                    <li><a class="dropdown-item" href="{{ url('mobil/laporan/cetak') }}" target="_blank">
+                                            Laporan Mobil</a></li>
                                 </ul>
-                            </div>
+                            </li>
                         @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">

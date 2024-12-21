@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,17 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Menambahkan middleware auth untuk memastikan user yang sudah login dapat mengakses route berikut
 Route::middleware(['auth'])->group(function () {
 
+    // Route untuk Pengguna
     Route::resource('pengguna', PenggunaController::class);
     Route::get('pengguna/laporan/cetak', [PenggunaController::class, 'laporan']);
     Route::delete('pengguna/{id}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
+
+    // Route untuk Mobil
+    Route::resource('mobil', MobilController::class);  // Menggunakan "mobil" sebagai nama route
+    Route::get('mobil/laporan/cetak', [MobilController::class, 'laporan']);
+    Route::delete('mobil/{id}', [MobilController::class, 'destroy'])->name('mobil.destroy');  // Mengubah nama route
 });
