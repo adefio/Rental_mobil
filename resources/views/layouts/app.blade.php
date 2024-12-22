@@ -47,6 +47,8 @@
                                     <li><a class="dropdown-item" href="{{ url('pengguna') }}">Data Pengguna</a></li>
                                     <li><a class="dropdown-item" href="{{ url('pengguna/create') }}">Tambah Pengguna</a>
                                     </li>
+                                    <li><a class="dropdown-item" href="{{ url('transaksi') }}">Data Transaksi</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('transaksi/create') }}">Tambah Transaksi</a>
                                 </ul>
                             </li>
 
@@ -62,6 +64,9 @@
                                             Laporan Pengguna</a></li>
                                     <li><a class="dropdown-item" href="{{ url('mobil/laporan/cetak') }}" target="_blank">
                                             Laporan Mobil</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('transaksi/laporan/cetak') }}"
+                                            target="_blank">
+                                            Laporan Transaksi</a></li>
                                 </ul>
                             </li>
                         @endauth

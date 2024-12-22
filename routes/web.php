@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('mobil', MobilController::class);  // Menggunakan "mobil" sebagai nama route
     Route::get('mobil/laporan/cetak', [MobilController::class, 'laporan']);
     Route::delete('mobil/{id}', [MobilController::class, 'destroy'])->name('mobil.destroy');  // Mengubah nama route
+
+    Route::resource('transaksi', TransaksiController::class);  // Menggunakan "mobil" sebagai nama route
+    Route::get('transaksi/laporan/cetak', [TransaksiController::class, 'laporan']);
+    Route::delete('transaksi/{id}', [TransaksiController::class, 'destroy'])->name('mobil.destroy');  // Mengubah nama route
+
 });
