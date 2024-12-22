@@ -65,7 +65,7 @@ class MobilController extends Controller
         $mobil->update($request->all());
 
         // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('mobil_index')->with('success', 'Mobil berhasil diperbarui.');
+        return redirect()->route('mobil.index')->with('success', 'Mobil berhasil diperbarui.');
     }
 
     // Menampilkan laporan data mobil
