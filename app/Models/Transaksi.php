@@ -8,11 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Transaksi extends Model
 {
     use HasFactory;
-
-    // Menentukan nama tabel jika berbeda dari default (bentuk jamak dari nama model)
     protected $table = 'transaksi';
 
-    // Kolom yang boleh diisi melalui mass assignment
     protected $fillable = [
         'pengguna_id',
         'mobil_id',

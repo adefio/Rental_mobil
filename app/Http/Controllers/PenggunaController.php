@@ -10,7 +10,7 @@ class PenggunaController extends Controller
     public function index()
     {
         $judul = 'Laporan Data Pengguna';
-        $pengguna = Pengguna::paginate(10); // Paginate the data (10 items per page)
+        $pengguna = Pengguna::paginate(10);
         return view('pengguna_index', compact('pengguna', 'judul'));
     }
 
@@ -65,21 +65,16 @@ class PenggunaController extends Controller
 
     public function laporan()
     {
-        $judul = 'Laporan Data Pengguna';  // Menetapkan nilai untuk judul
-        $pengguna = Pengguna::all();  // Mendapatkan data pengguna
-        return view('pengguna_laporan', compact('pengguna', 'judul'));  // Mengirim variabel ke view
+        $judul = 'Laporan Data Pengguna';
+        $pengguna = Pengguna::all();
+        return view('pengguna_laporan', compact('pengguna', 'judul'));
     }
 
 
     public function destroy($id)
     {
-        // Cari pengguna berdasarkan ID
         $pengguna = Pengguna::findOrFail($id);
-
-        // Hapus pengguna
         $pengguna->delete();
-
-        // Redirect kembali dengan pesan sukses
         return back()->with('pesan', 'Data pengguna berhasil dihapus');
     }
 }

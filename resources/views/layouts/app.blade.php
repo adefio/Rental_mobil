@@ -49,6 +49,10 @@
                                     </li>
                                     <li><a class="dropdown-item" href="{{ url('transaksi') }}">Data Transaksi</a></li>
                                     <li><a class="dropdown-item" href="{{ url('transaksi/create') }}">Tambah Transaksi</a>
+                                    <li><a class="dropdown-item" href="{{ url('pengembalian') }}">Data Pengembalian</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ url('pengembalian/create') }}">Tambah
+                                            Pengembalian</a>
                                 </ul>
                             </li>
 
@@ -67,6 +71,9 @@
                                     <li><a class="dropdown-item" href="{{ url('transaksi/laporan/cetak') }}"
                                             target="_blank">
                                             Laporan Transaksi</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('pengembalian/laporan/cetak') }}"
+                                            target="_blank">
+                                            Laporan Pengembalian</a></li>
                                 </ul>
                             </li>
                         @endauth

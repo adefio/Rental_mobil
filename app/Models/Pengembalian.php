@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class Pengembalian extends Model
 {
     use HasFactory;
+    protected $table = 'pengembalian';
 
     protected $fillable = [
         'transaksi_id',

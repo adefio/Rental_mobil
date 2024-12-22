@@ -2,95 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengembalian;
-use App\Models\Transaksi;
+use App\Models\{Pengembalian, Transaksi};
 use Illuminate\Http\Request;
 
 class PengembalianController extends Controller
 {
-    // Menampilkan semua data pengembalian
     public function index()
     {
-        $pengembalian = Pengembalian::with('transaksi')->get();
-        return view('pengembalian.index', compact('pengembalian'));
+        $judul = 'Laporan Data Pengembalian';
+        $pengembalian = Pengembalian::with(['transaksi.pengguna', 'transaksi.mobil'])->paginate(10);
+        return view('pengembalian_index', compact('pengembalian', 'judul'));
     }
 
-    // Menampilkan form untuk menambah data pengembalian
     public function create()
     {
-        $transaksi = Transaksi::all();
-        return view('pengembalian.create', compact('transaksi'));
+        $judul = 'Tambah Data Pengembalian';
+        $list_transaksi = Transaksi::pluck('id', 'id'); // ID transaksi yang tersedia
+        return view('pengembalian_create', compact('list_transaksi'));
     }
 
-    // Menyimpan data pengembalian yang baru
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'transaksi_id' => 'required|exists:transaksi,id',
+            'denda_telat' => 'nullable|numeric|min:0',
+            'biaya_kerusakan' => 'nullable|numeric|min:0',
+            'deskripsi_kerusakan' => 'nullable|string|max:255',
             'tanggal_pengembalian' => 'required|date',
-            'deskripsi_kerusakan' => 'nullable|string',
-            'biaya_kerusakan' => 'nullable|numeric',
         ]);
 
-        // Mendapatkan data transaksi untuk mendapatkan tanggal seharusnya kembali
-        $transaksi = Transaksi::findOrFail($request->transaksi_id);
-        $tanggal_seharusnya_kembali = $transaksi->tanggal_pengembalian; // Asumsi ada kolom ini di transaksi
-
-        // Hitung denda keterlambatan
-        $pengembalian = new Pengembalian();
-        $pengembalian->transaksi_id = $request->transaksi_id;
-        $pengembalian->tanggal_pengembalian = $request->tanggal_pengembalian;
-        $pengembalian->denda_telat = $pengembalian->hitungDendaTelat($tanggal_seharusnya_kembali, $request->tanggal_pengembalian);
-        $pengembalian->biaya_kerusakan = $request->biaya_kerusakan;
-        $pengembalian->deskripsi_kerusakan = $request->deskripsi_kerusakan;
-
-        // Simpan data pengembalian
-        $pengembalian->save();
-
-        return redirect()->route('pengembalian.index')->with('success', 'Data pengembalian berhasil ditambahkan.');
+        Pengembalian::create($request->all());
+        return back()->with('pesan', 'Data pengembalian berhasil disimpan');
     }
 
-    // Menampilkan form untuk mengedit data pengembalian
     public function edit($id)
     {
         $pengembalian = Pengembalian::findOrFail($id);
-        $transaksi = Transaksi::all();
-        return view('pengembalian.edit', compact('pengembalian', 'transaksi'));
+        $list_transaksi = Transaksi::pluck('id', 'id');
+
+        return view('pengembalian_edit', compact('pengembalian', 'list_transaksi'));
     }
 
-    // Memperbarui data pengembalian
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'tanggal_pengembalian' => 'required|date',
-            'deskripsi_kerusakan' => 'nullable|string',
-            'biaya_kerusakan' => 'nullable|numeric',
-        ]);
-
-        // Mendapatkan data pengembalian
         $pengembalian = Pengembalian::findOrFail($id);
 
-        // Mendapatkan data transaksi untuk mendapatkan tanggal seharusnya kembali
-        $transaksi = Transaksi::findOrFail($pengembalian->transaksi_id);
-        $tanggal_seharusnya_kembali = $transaksi->tanggal_pengembalian;
+        $request->validate([
+            'transaksi_id' => 'required|exists:transaksi,id',
+            'denda_telat' => 'nullable|numeric|min:0',
+            'biaya_kerusakan' => 'nullable|numeric|min:0',
+            'deskripsi_kerusakan' => 'nullable|string|max:255',
+            'tanggal_pengembalian' => 'required|date',
+        ]);
 
-        // Hitung denda keterlambatan
-        $pengembalian->tanggal_pengembalian = $request->tanggal_pengembalian;
-        $pengembalian->denda_telat = $pengembalian->hitungDendaTelat($tanggal_seharusnya_kembali, $request->tanggal_pengembalian);
-        $pengembalian->biaya_kerusakan = $request->biaya_kerusakan;
-        $pengembalian->deskripsi_kerusakan = $request->deskripsi_kerusakan;
-
-        // Simpan perubahan data pengembalian
-        $pengembalian->save();
-
-        return redirect()->route('pengembalian.index')->with('success', 'Data pengembalian berhasil diperbarui.');
+        $pengembalian->update($request->all());
+        return back()->with('pesan', 'Data pengembalian berhasil diupdate');
     }
 
-    // Menampilkan laporan pengembalian
     public function laporan()
     {
-        $pengembalian = Pengembalian::with('transaksi')->get();
-        return view('pengembalian.laporan', compact('pengembalian'));
+        $judul = 'Laporan Data Pengembalian';
+        $pengembalian = Pengembalian::with(['transaksi.pengguna', 'transaksi.mobil'])->get();
+        return view('pengembalian_laporan', compact('pengembalian', 'judul'));
+    }
+
+    public function destroy($id)
+    {
+        $pengembalian = Pengembalian::findOrFail($id);
+        $pengembalian->delete();
+        return back()->with('pesan', 'Data pengembalian berhasil dihapus');
     }
 }

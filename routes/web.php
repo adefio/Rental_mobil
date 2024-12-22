@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MobilController;
+use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Auth;
@@ -25,21 +26,21 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Menambahkan middleware auth untuk memastikan user yang sudah login dapat mengakses route berikut
 Route::middleware(['auth'])->group(function () {
 
-    // Route untuk Pengguna
     Route::resource('pengguna', PenggunaController::class);
     Route::get('pengguna/laporan/cetak', [PenggunaController::class, 'laporan']);
     Route::delete('pengguna/{id}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
 
-    // Route untuk Mobil
-    Route::resource('mobil', MobilController::class);  // Menggunakan "mobil" sebagai nama route
+    Route::resource('mobil', MobilController::class);
     Route::get('mobil/laporan/cetak', [MobilController::class, 'laporan']);
-    Route::delete('mobil/{id}', [MobilController::class, 'destroy'])->name('mobil.destroy');  // Mengubah nama route
+    Route::delete('mobil/{id}', [MobilController::class, 'destroy'])->name('mobil.destroy');
 
-    Route::resource('transaksi', TransaksiController::class);  // Menggunakan "mobil" sebagai nama route
+    Route::resource('transaksi', TransaksiController::class);
     Route::get('transaksi/laporan/cetak', [TransaksiController::class, 'laporan']);
-    Route::delete('transaksi/{id}', [TransaksiController::class, 'destroy'])->name('mobil.destroy');  // Mengubah nama route
+    Route::delete('transaksi/{id}', [TransaksiController::class, 'destroy'])->name('mobil.destroy');
 
+    Route::resource('pengembalian', PengembalianController::class);
+    Route::get('pengembalian/laporan/cetak', [PengembalianController::class, 'laporan']);
+    Route::delete('pengembalian/{id}', [PengembalianController::class, 'destroy'])->name('mobil.destroy');
 });
