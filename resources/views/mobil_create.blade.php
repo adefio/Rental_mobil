@@ -45,7 +45,6 @@
                                 <select id="status" class="form-control" name="status">
                                     <option value="tersedia" @selected('tersedia' == old('status'))>Tersedia</option>
                                     <option value="disewa" @selected('disewa' == old('status'))>Disewa</option>
-                                    <option value="maintenance" @selected('maintenance' == old('status'))>Maintenance</option>
                                 </select>
                                 <span class="text-danger">{{ $errors->first('status') }}</span>
                             </div>
