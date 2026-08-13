@@ -53,8 +53,6 @@ class MobilController extends Controller
 
         $this->service->store($data);
 
-        log_aktivitas('menambah', 'Mobil "' . $data['nama_mobil'] . '" ditambahkan');
-
         return redirect()->route('mobil.index')->with('success', 'Mobil berhasil ditambahkan.');
     }
 
@@ -96,8 +94,6 @@ class MobilController extends Controller
 
         $this->service->update($id, $data);
 
-        log_aktivitas('mengubah', 'Mobil "' . $data['nama_mobil'] . '" diperbarui');
-
         return redirect()->route('mobil.index')->with('success', 'Mobil berhasil diperbarui.');
     }
 
@@ -138,8 +134,6 @@ class MobilController extends Controller
         foreach ($mobil->gambar ?? [] as $path) {
             Storage::disk('public')->delete($path);
         }
-
-        log_aktivitas('menghapus', 'Mobil "' . ($mobil->nama_mobil ?? '') . '" dihapus');
 
         $this->service->delete($id);
 

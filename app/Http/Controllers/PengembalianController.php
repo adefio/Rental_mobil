@@ -41,8 +41,6 @@ class PengembalianController extends Controller
 
         $this->service->store($data);
 
-        log_aktivitas('menambah', 'Data pengembalian untuk transaksi #' . $data['transaksi_id'] . ' dicatat');
-
         return back()->with('pesan', 'Data pengembalian berhasil disimpan');
     }
 
@@ -68,8 +66,6 @@ class PengembalianController extends Controller
 
         $this->service->update($id, $data);
 
-        log_aktivitas('mengubah', 'Data pengembalian #' . $id . ' diperbarui');
-
         return back()->with('pesan', 'Data pengembalian berhasil diupdate');
     }
 
@@ -85,8 +81,6 @@ class PengembalianController extends Controller
 
     public function destroy($id)
     {
-        log_aktivitas('menghapus', 'Data pengembalian #' . $id . ' dihapus');
-
         $this->service->delete($id);
 
         return back()->with('pesan', 'Data pengembalian berhasil dihapus');

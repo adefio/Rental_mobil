@@ -8,7 +8,6 @@ use App\Services\TransaksiService;
 use App\Services\PengembalianService;
 use App\Services\ImageService;
 use App\Services\SettingsService;
-use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -153,8 +152,6 @@ class HomeController extends Controller
 
         $user->pengguna()->updateOrCreate(['user_id' => $user->id], $penggunaData);
 
-        log_aktivitas('mengubah', 'Profil admin "' . $user->name . '" diperbarui');
-
         return back()->with('success', 'Profil berhasil diperbarui.');
     }
 
@@ -187,41 +184,6 @@ class HomeController extends Controller
 
         app(SettingsService::class)->update($data);
 
-        log_aktivitas('mengubah', 'Pengaturan aplikasi diperbarui');
-
         return back()->with('success', 'Pengaturan aplikasi berhasil disimpan.');
-    }
-
-    public function logAktivitas()
-    {
-        $logs = app(ActivityLogger::class)->paginated(15);
-
-        $badgeMap = [
-            ['value' => 'menambah', 'label' => 'Menambah', 'class' => 'bg-success'],
-            ['value' => 'mengubah', 'label' => 'Mengubah', 'class' => 'bg-warning text-dark'],
-            ['value' => 'menghapus', 'label' => 'Menghapus', 'class' => 'bg-danger'],
-            ['value' => 'login', 'label' => 'Login', 'class' => 'bg-info text-dark'],
-            ['value' => 'logout', 'label' => 'Logout', 'class' => 'bg-secondary'],
-        ];
-
-        return view('admin.log', [
-            'judul' => 'Log Aktivitas',
-            'logs' => $logs,
-            'columns' => [
-                ['key' => 'id', 'label' => 'ID'],
-                ['key' => 'user_name', 'label' => 'Pengguna'],
-                ['key' => 'aksi', 'label' => 'Aksi', 'type' => 'badge', 'badgeMap' => $badgeMap],
-                ['key' => 'deskripsi', 'label' => 'Keterangan'],
-                ['key' => 'created_at', 'label' => 'Waktu', 'type' => 'datetime'],
-            ],
-            'pagination' => [
-                'total' => $logs->total(),
-                'per_page' => $logs->perPage(),
-                'current_page' => $logs->currentPage(),
-                'last_page' => $logs->lastPage(),
-                'next_url' => $logs->nextPageUrl(),
-                'prev_url' => $logs->previousPageUrl(),
-            ],
-        ]);
     }
 }

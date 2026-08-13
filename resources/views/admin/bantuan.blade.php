@@ -184,19 +184,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
-                                    Di mana saya melihat riwayat perubahan data?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Buka menu <em>Log Aktivitas</em>. Semua aktivitas masuk, keluar, serta penambahan/perubahan/penghapusan data tercatat beserta waktu dan penggunanya.
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>

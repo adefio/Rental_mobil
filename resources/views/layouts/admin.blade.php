@@ -102,11 +102,6 @@
                             <i class="nav-icon"><x-icon name="settings" /></i> Pengaturan Aplikasi
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('log-aktivitas*') ? 'active' : '' }}" href="{{ url('log-aktivitas') }}">
-                            <i class="nav-icon"><x-icon name="activity" /></i> Log Aktivitas
-                        </a>
-                    </li>
                 </ul>
             </nav>
 

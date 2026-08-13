@@ -40,8 +40,6 @@ class PenggunaController extends Controller
 
         $this->service->store($data);
 
-        log_aktivitas('menambah', 'Pengguna "' . $data['nama'] . '" ditambahkan');
-
         return back()->with('pesan', 'Data sudah Disimpan');
     }
 
@@ -72,8 +70,6 @@ class PenggunaController extends Controller
 
         $this->service->update($id, $data);
 
-        log_aktivitas('mengubah', 'Pengguna "' . $data['nama'] . '" diperbarui');
-
         return back()->with('pesan', 'Data sudah Disimpan');
     }
 
@@ -92,8 +88,6 @@ class PenggunaController extends Controller
         $pengguna = $this->service->findForEdit($id);
 
         $this->ensurePelanggan($pengguna);
-
-        log_aktivitas('menghapus', 'Pengguna "' . ($pengguna->nama ?? '') . '" dihapus');
 
         $this->service->delete($id);
 

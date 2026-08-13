@@ -69,9 +69,6 @@
                                 <template v-else-if="col.type === 'date'">
                                     {{ formatDate(row[col.key]) }}
                                 </template>
-                                <template v-else-if="col.type === 'datetime'">
-                                    {{ formatDateTime(row[col.key]) }}
-                                </template>
                                 <template v-else-if="col.accessor">
                                     {{ accessorValue(row, col.accessor) }}
                                 </template>
@@ -223,13 +220,6 @@ export default {
             const date = new Date(value);
             if (isNaN(date)) return value;
             return date.toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
-        },
-        formatDateTime(value) {
-            if (!value) return '-';
-            const date = new Date(value);
-            if (isNaN(date)) return value;
-            return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) +
-                ', ' + date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
         },
         accessorValue(row, accessor) {
             return (accessor || []).reduce((acc, key) => (acc ? acc[key] : null), row);

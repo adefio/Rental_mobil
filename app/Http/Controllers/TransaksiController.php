@@ -52,8 +52,6 @@ class TransaksiController extends Controller
 
         $this->service->store($data);
 
-        log_aktivitas('menambah', 'Transaksi pesanan baru diterima');
-
         return back()->with('pesan', 'Pesanan berhasil diterima');
     }
 
@@ -81,8 +79,6 @@ class TransaksiController extends Controller
 
         $this->service->update($id, $data);
 
-        log_aktivitas('mengubah', 'Transaksi #' . $id . ' diperbarui');
-
         return back()->with('pesan', 'Data transaksi berhasil diupdate');
     }
 
@@ -98,8 +94,6 @@ class TransaksiController extends Controller
 
     public function destroy($id)
     {
-        log_aktivitas('menghapus', 'Transaksi #' . $id . ' dihapus');
-
         $this->service->delete($id);
 
         return back()->with('pesan', 'Data transaksi berhasil dihapus');

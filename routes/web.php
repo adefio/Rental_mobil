@@ -64,6 +64,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('pengaturan', [HomeController::class, 'updatePengaturan'])->name('admin.pengaturan.update');
 
     Route::get('bantuan', [HomeController::class, 'bantuan'])->name('admin.bantuan');
-
-    Route::get('log-aktivitas', [HomeController::class, 'logAktivitas'])->name('admin.log');
 });
