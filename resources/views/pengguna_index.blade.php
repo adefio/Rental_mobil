@@ -1,58 +1,27 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Data Pengguna')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        {{ $judul }}
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nama Pengguna</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>No. Telepon</th>
-                                    <th>Alamat</th>
-                                    <th>Created</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($pengguna as $p)
-                                    <tr>
-                                        <td>{{ $p->id }}</td>
-                                        <td>{{ $p->nama }}</td>
-                                        <td>{{ $p->email }}</td>
-                                        <td>{{ $p->role }}</td>
-                                        <td>{{ $p->no_telepon }}</td>
-                                        <td>{{ $p->alamat }}</td>
-                                        <td>{{ $p->created_at }}</td>
-                                        <td>
-                                            <a href="{{ url('pengguna/' . $p->id . '/edit') }}"
-                                                class="btn btn-primary btn-sm">Edit</a>
-
-                                            <form action="{{ url('pengguna/' . $p->id) }}" method="post" class="d-inline"
-                                                onsubmit="return confirm('Apakah Anda Yakin Ingin Menghapus?')">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        {{ $pengguna->links() }}
-                    </div>
-                </div>
-            </div>
+    <div class="admin-page-header d-flex flex-wrap align-items-end justify-content-between gap-3">
+        <div>
+            <h1 class="admin-page-title mb-1">Data Pengguna</h1>
+            <p class="admin-page-sub mb-0">Kelola data pelanggan dan administrator sistem.</p>
         </div>
+        <a href="{{ url('pengguna/create') }}"
+            class="btn btn-primary d-inline-flex align-items-center gap-2">
+            <x-icon name="plus" class="icon-sm" /> Tambah Pengguna
+        </a>
     </div>
+
+    <div
+        data-vue="DataTable"
+        data-title="Data Pengguna"
+        data-rows='@json($pengguna->items())'
+        data-edit-route="{{ url('pengguna/__ID__/edit') }}"
+        data-delete-route="{{ url('pengguna/__ID__') }}"
+        data-pagination='@json($pagination)'
+        data-pagination-path="{{ $pengguna->path() }}"
+        data-columns='@json($columns)'
+    ></div>
 @endsection

@@ -1,69 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.report')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Data Transaksi</title>
+@section('report-content')
+    @php
+        $totalSemua = $transaksi->sum('total_harga');
+        $totalLunas = $transaksi->where('status_pembayaran', 'lunas')->sum('total_harga');
+    @endphp
 
-    <!-- Scripts-->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <style>
-        .harga-display {
-            display: inline-block;
-            text-align: right;
-            min-width: 100px;
-        }
-    </style>
-</head>
+    <div class="report-info-bar">
+        <span class="report-info-item">
+            <x-icon name="clipboard" class="icon-sm" />
+            Total Transaksi: <strong>{{ count($transaksi) }}</strong>
+        </span>
+        <span class="report-info-item">
+            <x-icon name="check-circle" class="icon-sm" />
+            Lunas: <strong>{{ $transaksi->where('status_pembayaran', 'lunas')->count() }}</strong>
+        </span>
+        <span class="report-info-item">
+            <x-icon name="clock" class="icon-sm" />
+            Pending: <strong>{{ $transaksi->where('status_pembayaran', 'pending')->count() }}</strong>
+        </span>
+        <span class="report-info-item">
+            <x-icon name="x" class="icon-sm" />
+            Batal: <strong>{{ $transaksi->where('status_pembayaran', 'batal')->count() }}</strong>
+        </span>
+    </div>
 
-<body>
+    <div class="report-table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tgl. Pemesanan</th>
+                    <th>Periode Sewa</th>
+                    <th>Pengguna</th>
+                    <th>Mobil</th>
+                    <th class="num">Total Harga</th>
+                    <th class="center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($transaksi as $t)
+                    <tr>
+                        <td>{{ $t->id }}</td>
+                        <td>{{ date('d M Y', strtotime($t->tanggal_pemesanan)) }}</td>
+                        <td>
+                            {{ date('d M Y', strtotime($t->tanggal_mulai)) }}
+                            &rarr;
+                            {{ date('d M Y', strtotime($t->tanggal_selesai)) }}
+                        </td>
+                        <td>{{ $t->pengguna->nama ?? '-' }}</td>
+                        <td>{{ $t->mobil->nama_mobil ?? '-' }}</td>
+                        <td class="num">Rp {{ number_format($t->total_harga, 0, ',', '.') }}</td>
+                        <td class="center">
+                            @switch($t->status_pembayaran)
+                                @case('lunas')
+                                    <span class="report-badge report-badge-success">Lunas</span>
+                                    @break
+                                @case('pending')
+                                    <span class="report-badge report-badge-warning">Pending</span>
+                                    @break
+                                @case('batal')
+                                    <span class="report-badge report-badge-danger">Batal</span>
+                                    @break
+                                @default
+                                    <span class="report-badge report-badge-neutral">{{ $t->status_pembayaran }}</span>
+                            @endswitch
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="center">Tidak ada data transaksi.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-
-                <h2 class="text-center">{{ $judul }}</h2>
-
-                <table class="table table-striped table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Tanggal Pemesanan</td>
-                            <td>Tanggal Mulai</td>
-                            <td>Tanggal Selesai</td>
-                            <td>Nama Pengguna</td>
-                            <td>Nama Mobil</td>
-                            <td>Total Harga</td>
-                            <td>Status Pembayaran</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($transaksi as $t)
-                            <tr>
-                                <td>{{ $t->id }}</td>
-                                <td>{{ date('d M Y', strtotime($t->tanggal_pemesanan)) }}</td>
-                                <td>{{ date('d M Y', strtotime($t->tanggal_mulai)) }}</td>
-                                <td>{{ date('d M Y', strtotime($t->tanggal_selesai)) }}</td>
-                                <td>{{ $t->pengguna->nama }}</td>
-                                <td>{{ $t->mobil->nama_mobil }}</td>
-                                <td>Rp <span
-                                        class="harga-display">{{ number_format($t->total_harga, 0, ',', '.') }}</span>
-                                </td>
-                                <td>{{ ucfirst($t->status_pembayaran) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <h5>Mengetahui</h5>
-                <br>
-                <br>
-                <br>
-                <h5>Admin</h5>
-            </div>
+    <div class="report-summary">
+        <div class="report-summary-box">
+            <div class="label">Total Pendapatan (Lunas)</div>
+            <div class="value">Rp {{ number_format($totalLunas, 0, ',', '.') }}</div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

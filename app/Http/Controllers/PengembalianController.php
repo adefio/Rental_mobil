@@ -2,28 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Pengembalian, Transaksi};
+use App\Services\PengembalianService;
 use Illuminate\Http\Request;
 
 class PengembalianController extends Controller
 {
+    public function __construct(protected PengembalianService $service)
+    {
+    }
+
     public function index()
     {
-        $judul = 'Laporan Data Pengembalian';
-        $pengembalian = Pengembalian::with(['transaksi.pengguna', 'transaksi.mobil'])->paginate(10);
-        return view('pengembalian_index', compact('pengembalian', 'judul'));
+        return view('pengembalian_index', array_merge(
+            ['judul' => 'Laporan Data Pengembalian'],
+            $this->service->paginatedData()
+        ));
     }
 
     public function create()
     {
         $judul = 'Tambah Data Pengembalian';
-        $list_transaksi = Transaksi::pluck('id', 'id'); // ID transaksi yang tersedia
-        return view('pengembalian_create', compact('list_transaksi'));
+
+        return view('pengembalian_create', array_merge(
+            ['judul' => $judul],
+            $this->service->createData()
+        ));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'transaksi_id' => 'required|exists:transaksi,id',
             'denda_telat' => 'nullable|numeric|min:0',
             'biaya_kerusakan' => 'nullable|numeric|min:0',
@@ -31,23 +39,26 @@ class PengembalianController extends Controller
             'tanggal_pengembalian' => 'required|date',
         ]);
 
-        Pengembalian::create($request->all());
+        $this->service->store($data);
+
+        log_aktivitas('menambah', 'Data pengembalian untuk transaksi #' . $data['transaksi_id'] . ' dicatat');
+
         return back()->with('pesan', 'Data pengembalian berhasil disimpan');
     }
 
     public function edit($id)
     {
-        $pengembalian = Pengembalian::findOrFail($id);
-        $list_transaksi = Transaksi::pluck('id', 'id');
+        $judul = 'Edit Data Pengembalian';
 
-        return view('pengembalian_edit', compact('pengembalian', 'list_transaksi'));
+        return view('pengembalian_edit', array_merge(
+            ['judul' => $judul],
+            $this->service->editData($id)
+        ));
     }
 
     public function update(Request $request, $id)
     {
-        $pengembalian = Pengembalian::findOrFail($id);
-
-        $request->validate([
+        $data = $request->validate([
             'transaksi_id' => 'required|exists:transaksi,id',
             'denda_telat' => 'nullable|numeric|min:0',
             'biaya_kerusakan' => 'nullable|numeric|min:0',
@@ -55,21 +66,29 @@ class PengembalianController extends Controller
             'tanggal_pengembalian' => 'required|date',
         ]);
 
-        $pengembalian->update($request->all());
+        $this->service->update($id, $data);
+
+        log_aktivitas('mengubah', 'Data pengembalian #' . $id . ' diperbarui');
+
         return back()->with('pesan', 'Data pengembalian berhasil diupdate');
     }
 
     public function laporan()
     {
         $judul = 'Laporan Data Pengembalian';
-        $pengembalian = Pengembalian::with(['transaksi.pengguna', 'transaksi.mobil'])->get();
-        return view('pengembalian_laporan', compact('pengembalian', 'judul'));
+
+        return view('pengembalian_laporan', [
+            'judul' => $judul,
+            'pengembalian' => $this->service->laporanData(),
+        ]);
     }
 
     public function destroy($id)
     {
-        $pengembalian = Pengembalian::findOrFail($id);
-        $pengembalian->delete();
+        log_aktivitas('menghapus', 'Data pengembalian #' . $id . ' dihapus');
+
+        $this->service->delete($id);
+
         return back()->with('pesan', 'Data pengembalian berhasil dihapus');
     }
 }

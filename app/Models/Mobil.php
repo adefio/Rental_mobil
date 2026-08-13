@@ -17,6 +17,11 @@ class Mobil extends Model
         'harga_sewa',
         'deskripsi',
         'status',
+        'gambar',
+    ];
+
+    protected $casts = [
+        'gambar' => 'array',
     ];
 
     public function transaksi()

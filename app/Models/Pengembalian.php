@@ -56,6 +56,6 @@ class Pengembalian extends Model
      */
     public function hitungTotalDenda()
     {
-        return $this->denda_telat + ($this->biaya_kerusakan ?? 0);
+        return ($this->denda_telat ?? 0) + ($this->biaya_kerusakan ?? 0);
     }
 }

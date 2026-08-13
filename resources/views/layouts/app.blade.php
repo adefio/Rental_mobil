@@ -37,11 +37,11 @@
                         @auth
                             <!-- Data Rental Mobil Dropdown -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarData" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Data Rental Mobil
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu" aria-labelledby="navbarData">
                                     <li><a class="dropdown-item" href="{{ url('mobil') }}">Data Mobil</a></li>
                                     <li><a class="dropdown-item" href="{{ url('mobil/create') }}">Tambah Mobil</a></li>
                                     <li><a class="dropdown-item" href="{{ url('pengguna') }}">Data Pengguna</a></li>
@@ -49,10 +49,11 @@
                                     </li>
                                     <li><a class="dropdown-item" href="{{ url('transaksi') }}">Data Transaksi</a></li>
                                     <li><a class="dropdown-item" href="{{ url('transaksi/create') }}">Tambah Transaksi</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ url('pengembalian') }}">Data Pengembalian</a>
                                     </li>
                                     <li><a class="dropdown-item" href="{{ url('pengembalian/create') }}">Tambah
-                                            Pengembalian</a>
+                                            Pengembalian</a></li>
                                 </ul>
                             </li>
 
@@ -101,15 +102,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="#"
+                                        onclick="event.preventDefault(); new bootstrap.Modal(document.getElementById('logoutModal')).show();">
                                         {{ __('Logout') }}
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </div>
                             </li>
                         @endguest
@@ -129,6 +125,8 @@
             @yield('content')
         </main>
     </div>
+
+    <x-logout-modal />
 </body>
 
 </html>

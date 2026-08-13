@@ -2,79 +2,108 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengguna;
+use App\Services\PenggunaService;
 use Illuminate\Http\Request;
 
 class PenggunaController extends Controller
 {
-    public function index()
+    public function __construct(protected PenggunaService $service)
     {
-        $judul = 'Laporan Data Pengguna';
-        $pengguna = Pengguna::paginate(10);
-        return view('pengguna_index', compact('pengguna', 'judul'));
     }
 
+    public function index()
+    {
+        return view('pengguna_index', array_merge(
+            ['judul' => 'Laporan Data Pengguna'],
+            $this->service->paginatedData()
+        ));
+    }
 
     public function create()
     {
-        $pengguna['judul'] = 'Laporan Data Pengguna';
-        return view('pengguna_create');
+        $judul = 'Tambah Data Pengguna';
+
+        return view('pengguna_create', compact('judul'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'nama' => 'required|string',
             'email' => 'required|email|unique:pengguna,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:pelanggan,admin',
+            'no_telepon' => 'nullable|string',
+            'alamat' => 'nullable|string',
         ]);
 
-        Pengguna::create([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => $request->role,
-            'no_telepon' => $request->no_telepon,
-            'alamat' => $request->alamat,
-        ]);
+        $data['role'] = 'pelanggan';
+
+        $this->service->store($data);
+
+        log_aktivitas('menambah', 'Pengguna "' . $data['nama'] . '" ditambahkan');
 
         return back()->with('pesan', 'Data sudah Disimpan');
     }
 
     public function edit($id)
     {
-        $pengguna['judul'] = 'Laporan Data Pengguna';
-        $pengguna = Pengguna::findOrFail($id);
-        return view('pengguna_edit', compact('pengguna'));
+        $judul = 'Edit Data Pengguna';
+        $pengguna = $this->service->findForEdit($id);
+
+        $this->ensurePelanggan($pengguna);
+
+        return view('pengguna_edit', compact('pengguna', 'judul'));
     }
 
     public function update(Request $request, $id)
     {
-        $pengguna = Pengguna::findOrFail($id);
+        $pengguna = $this->service->findForEdit($id);
 
-        $request->validate([
+        $this->ensurePelanggan($pengguna);
+
+        $data = $request->validate([
             'nama' => 'required|string',
-            'email' => 'required|email|unique:pengguna,email,' . $pengguna->id,
-            'role' => 'required|in:pelanggan,admin',
+            'email' => 'required|email|unique:pengguna,email,' . $id,
+            'no_telepon' => 'nullable|string',
+            'alamat' => 'nullable|string',
         ]);
 
-        $pengguna->update($request->all());
+        $data['role'] = 'pelanggan';
+
+        $this->service->update($id, $data);
+
+        log_aktivitas('mengubah', 'Pengguna "' . $data['nama'] . '" diperbarui');
+
         return back()->with('pesan', 'Data sudah Disimpan');
     }
 
     public function laporan()
     {
         $judul = 'Laporan Data Pengguna';
-        $pengguna = Pengguna::all();
-        return view('pengguna_laporan', compact('pengguna', 'judul'));
-    }
 
+        return view('pengguna_laporan', [
+            'judul' => $judul,
+            'pengguna' => $this->service->laporanData(),
+        ]);
+    }
 
     public function destroy($id)
     {
-        $pengguna = Pengguna::findOrFail($id);
-        $pengguna->delete();
+        $pengguna = $this->service->findForEdit($id);
+
+        $this->ensurePelanggan($pengguna);
+
+        log_aktivitas('menghapus', 'Pengguna "' . ($pengguna->nama ?? '') . '" dihapus');
+
+        $this->service->delete($id);
+
         return back()->with('pesan', 'Data pengguna berhasil dihapus');
+    }
+
+    protected function ensurePelanggan($pengguna)
+    {
+        if ($pengguna->role === 'admin') {
+            abort(403, 'Akun admin tidak dikelola dari halaman ini. Ubah melalui Pengaturan Akun.');
+        }
     }
 }

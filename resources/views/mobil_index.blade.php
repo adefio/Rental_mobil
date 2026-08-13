@@ -1,60 +1,27 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Data Mobil')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        {{ $judul }}
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nama Mobil</th>
-                                    <th>Merk</th>
-                                    <th>Tahun</th>
-                                    <th>Harga Sewa</th>
-                                    <th>Status</th>
-                                    <th>Deskripsi</th>
-                                    <th>Created</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($mobil as $m)
-                                    <tr>
-                                        <td>{{ $m->id }}</td>
-                                        <td>{{ $m->nama_mobil }}</td>
-                                        <td>{{ $m->merk }}</td>
-                                        <td>{{ $m->tahun }}</td>
-                                        <td>Rp {{ number_format($m->harga_sewa, 2, ',', '.') }}</td>
-                                        <td>{{ $m->status }}</td>
-                                        <td>{{ $m->deskripsi }}</td>
-                                        <td>{{ $m->created_at }}</td>
-                                        <td>
-                                            <a href="{{ url('mobil/' . $m->id . '/edit') }}"
-                                                class="btn btn-primary btn-sm">Edit</a>
-
-                                            <form action="{{ url('mobil/' . $m->id) }}" method="post" class="d-inline"
-                                                onsubmit="return confirm('Apakah Anda Yakin Ingin Menghapus?')">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        {{ $mobil->links() }}
-                    </div>
-                </div>
-            </div>
+    <div class="admin-page-header d-flex flex-wrap align-items-end justify-content-between gap-3">
+        <div>
+            <h1 class="admin-page-title mb-1">Data Mobil</h1>
+            <p class="admin-page-sub mb-0">Kelola armada mobil yang tersedia untuk disewakan.</p>
         </div>
+        <a href="{{ url('mobil/create') }}"
+            class="btn btn-primary d-inline-flex align-items-center gap-2">
+            <x-icon name="plus" class="icon-sm" /> Tambah Mobil
+        </a>
     </div>
+
+    <div
+        data-vue="DataTable"
+        data-title="Data Mobil"
+        data-rows='@json($mobil->items())'
+        data-edit-route="{{ url('mobil/__ID__/edit') }}"
+        data-delete-route="{{ url('mobil/__ID__') }}"
+        data-pagination='@json($pagination)'
+        data-pagination-path="{{ $mobil->path() }}"
+        data-columns='@json($columns)'
+    ></div>
 @endsection

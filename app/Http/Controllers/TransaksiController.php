@@ -2,58 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Transaksi, Pengguna, Mobil};
+use App\Services\TransaksiService;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
+    public function __construct(protected TransaksiService $service)
+    {
+    }
+
     public function index()
     {
-        $judul = 'Laporan Data Transaksi';
-        $transaksi = Transaksi::with(['pengguna', 'mobil'])->paginate(10);
-        return view('transaksi_index', compact('transaksi', 'judul'));
+        return view('transaksi_index', array_merge(
+            ['judul' => 'Laporan Data Transaksi'],
+            $this->service->paginatedData()
+        ));
     }
 
     public function create()
     {
         $judul = 'Tambah Data Transaksi';
-        $list_pengguna = Pengguna::pluck('nama', 'id');
-        $list_mobil = Mobil::pluck('nama_mobil', 'id');
-        return view('transaksi_create', compact('judul', 'list_pengguna', 'list_mobil'));
-    }
 
+        return view('transaksi_create', array_merge(
+            ['judul' => $judul],
+            $this->service->createData()
+        ));
+    }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'pengguna_id' => 'required|exists:pengguna,id',
+        $data = $request->validate([
+            'pengguna_id' => 'required_if:jenis_pelanggan,terdaftar|nullable|exists:pengguna,id',
             'mobil_id' => 'required|exists:mobil,id',
             'tanggal_pemesanan' => 'required|date',
             'tanggal_mulai' => 'required|date|after_or_equal:tanggal_pemesanan',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'total_harga' => 'required|numeric|min:0',
             'status_pembayaran' => 'required|in:pending,lunas,batal',
+            'jenis_pelanggan' => 'required|in:terdaftar,baru',
+            'nama_baru' => 'required_if:jenis_pelanggan,baru|nullable|string|max:255',
+            'email_baru' => 'nullable|string|email|max:255|unique:pengguna,email',
+            'no_telepon_baru' => 'nullable|string|max:20',
+            'alamat_baru' => 'nullable|string|max:255',
+        ], [
+            'pengguna_id.required_if' => 'Pilih pelanggan terdaftar terlebih dahulu.',
+            'nama_baru.required_if' => 'Nama pelanggan baru wajib diisi.',
+            'email_baru.unique' => 'Email tersebut sudah terdaftar. Pilih jenis "Pelanggan Terdaftar" atau gunakan email lain.',
         ]);
 
-        Transaksi::create($request->all());
-        return back()->with('pesan', 'Data transaksi berhasil disimpan');
+        $this->service->store($data);
+
+        log_aktivitas('menambah', 'Transaksi pesanan baru diterima');
+
+        return back()->with('pesan', 'Pesanan berhasil diterima');
     }
 
     public function edit($id)
     {
-        $transaksi = Transaksi::find($id);
-        $list_pengguna = Pengguna::pluck('nama', 'id');
-        $list_mobil = Mobil::pluck('nama_mobil', 'id');
+        $judul = 'Edit Data Transaksi';
 
-        return view('transaksi_edit', compact('transaksi', 'list_pengguna', 'list_mobil'));
+        return view('transaksi_edit', array_merge(
+            ['judul' => $judul],
+            $this->service->editData($id)
+        ));
     }
-
 
     public function update(Request $request, $id)
     {
-        $transaksi = Transaksi::findOrFail($id);
-
-        $request->validate([
+        $data = $request->validate([
             'pengguna_id' => 'required|exists:pengguna,id',
             'mobil_id' => 'required|exists:mobil,id',
             'tanggal_pemesanan' => 'required|date',
@@ -63,21 +79,29 @@ class TransaksiController extends Controller
             'status_pembayaran' => 'required|in:pending,lunas,batal',
         ]);
 
-        $transaksi->update($request->all());
+        $this->service->update($id, $data);
+
+        log_aktivitas('mengubah', 'Transaksi #' . $id . ' diperbarui');
+
         return back()->with('pesan', 'Data transaksi berhasil diupdate');
     }
 
     public function laporan()
     {
         $judul = 'Laporan Data Transaksi';
-        $transaksi = Transaksi::with(['pengguna', 'mobil'])->get();
-        return view('transaksi_laporan', compact('transaksi', 'judul'));
+
+        return view('transaksi_laporan', [
+            'judul' => $judul,
+            'transaksi' => $this->service->laporanData(),
+        ]);
     }
 
     public function destroy($id)
     {
-        $transaksi = Transaksi::findOrFail($id);
-        $transaksi->delete();
+        log_aktivitas('menghapus', 'Transaksi #' . $id . ' dihapus');
+
+        $this->service->delete($id);
+
         return back()->with('pesan', 'Data transaksi berhasil dihapus');
     }
 }

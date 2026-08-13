@@ -11,18 +11,24 @@ class Pengguna extends Model
     protected $table = 'pengguna';
 
     protected $fillable = [
+        'user_id',
         'nama',
         'email',
         'password',
         'role',
         'no_telepon',
         'alamat',
+        'foto_profil',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function transaksi()
     {

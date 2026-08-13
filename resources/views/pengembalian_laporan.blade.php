@@ -1,56 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.report')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Data Pengembalian</title>
+@section('report-content')
+    @php
+        $totalDenda = $pengembalian->sum('denda_telat') + $pengembalian->sum('biaya_kerusakan');
+    @endphp
 
-    <!-- Scripts-->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-</head>
+    <div class="report-info-bar">
+        <span class="report-info-item">
+            <x-icon name="refresh" class="icon-sm" />
+            Total Pengembalian: <strong>{{ count($pengembalian) }}</strong>
+        </span>
+        <span class="report-info-item">
+            <x-icon name="wallet" class="icon-sm" />
+            Total Denda + Kerusakan: <strong>Rp {{ number_format($totalDenda, 0, ',', '.') }}</strong>
+        </span>
+    </div>
 
-<body>
+    <div class="report-table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID Transaksi</th>
+                    <th>Pengguna</th>
+                    <th>Mobil</th>
+                    <th>Tgl. Pengembalian</th>
+                    <th class="num">Denda Telat</th>
+                    <th class="num">Biaya Kerusakan</th>
+                    <th class="num">Total</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($pengembalian as $item)
+                    <tr>
+                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->transaksi_id }}</td>
+                        <td>{{ optional($item->transaksi->pengguna)->nama ?? '-' }}</td>
+                        <td>{{ optional($item->transaksi->mobil)->nama_mobil ?? '-' }}</td>
+                        <td>{{ date('d M Y', strtotime($item->tanggal_pengembalian)) }}</td>
+                        <td class="num">Rp {{ number_format($item->denda_telat, 0, ',', '.') }}</td>
+                        <td class="num">Rp {{ number_format($item->biaya_kerusakan, 0, ',', '.') }}</td>
+                        <td class="num">
+                            <strong>Rp {{ number_format($item->denda_telat + $item->biaya_kerusakan, 0, ',', '.') }}</strong>
+                        </td>
+                        <td>{{ $item->deskripsi_kerusakan ?? '-' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="9" class="center">Tidak ada data pengembalian.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <center>
-                    <h2>{{ $judul }}</h2>
-                </center>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>ID Transaksi</td>
-                            <td>Denda Telat</td>
-                            <td>Biaya Kerusakan</td>
-                            <td>Deskripsi Kerusakan</td>
-                            <td>Tanggal Pengembalian</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pengembalian as $item)
-                            <tr>
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->transaksi_id }}</td>
-                                <td>{{ $item->denda_telat }}</td>
-                                <td>{{ $item->biaya_kerusakan }}</td>
-                                <td>{{ $item->deskripsi_kerusakan }}</td>
-                                <td>{{ $item->tanggal_pengembalian }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <h5>Mengetahui</h5>
-                <br>
-                <br>
-                <br>
-                <h5>Admin</h5>
-            </div>
+    <div class="report-summary">
+        <div class="report-summary-box">
+            <div class="label">Total Biaya Pengembalian</div>
+            <div class="value">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

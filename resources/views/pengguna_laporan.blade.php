@@ -1,56 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.report')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Data Pengguna</title>
-
-    <!-- Scripts-->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-</head>
-
-<body>
-
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <center>
-                    <h2>{{ $judul }}</h2>
-                </center>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <td>id</td>
-                            <td>Nama Pengguna</td>
-                            <td>Email</td>
-                            <td>Role</td>
-                            <td>No HP</td>
-                            <td>Alamat</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pengguna as $a)
-                            <tr>
-                                <td>{{ $a->id }}</td>
-                                <td>{{ $a->nama }}</td>
-                                <td>{{ $a->email }}</td>
-                                <td>{{ $a->role }}</td>
-                                <td>{{ $a->no_telepon }}</td>
-                                <td>{{ $a->alamat }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <h5>Mengetahui</h5>
-                <br>
-                <br>
-                <br>
-                <h5>Admin</h5>
-            </div>
-        </div>
+@section('report-content')
+    <div class="report-info-bar">
+        <span class="report-info-item">
+            <x-icon name="users" class="icon-sm" />
+            Total Pengguna: <strong>{{ count($pengguna) }}</strong>
+        </span>
+        <span class="report-info-item">
+            <x-icon name="user" class="icon-sm" />
+            Pelanggan: <strong>{{ $pengguna->where('role', 'pelanggan')->count() }}</strong>
+        </span>
     </div>
-</body>
 
-</html>
+    <div class="report-table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Pengguna</th>
+                    <th>Email</th>
+                    <th>No. HP</th>
+                    <th>Alamat</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($pengguna as $a)
+                    <tr>
+                        <td>{{ $a->id }}</td>
+                        <td><strong>{{ $a->nama }}</strong></td>
+                        <td>{{ $a->email ?? '-' }}</td>
+                        <td>{{ $a->no_telepon ?? '-' }}</td>
+                        <td>{{ $a->alamat ?? '-' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="center">Tidak ada data pengguna.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+@endsection

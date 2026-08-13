@@ -2,21 +2,26 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\MobilRepositoryInterface;
+use App\Contracts\Repositories\PengembalianRepositoryInterface;
+use App\Contracts\Repositories\PenggunaRepositoryInterface;
+use App\Contracts\Repositories\TransaksiRepositoryInterface;
+use App\Repositories\MobilRepository;
+use App\Repositories\PengembalianRepository;
+use App\Repositories\PenggunaRepository;
+use App\Repositories\TransaksiRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        $this->app->bind(MobilRepositoryInterface::class, MobilRepository::class);
+        $this->app->bind(PenggunaRepositoryInterface::class, PenggunaRepository::class);
+        $this->app->bind(TransaksiRepositoryInterface::class, TransaksiRepository::class);
+        $this->app->bind(PengembalianRepositoryInterface::class, PengembalianRepository::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         //
