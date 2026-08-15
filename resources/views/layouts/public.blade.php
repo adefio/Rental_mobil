@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Rental Mobil') }} - @yield('title', 'Beranda')</title>
+    <title>{{ settings('nama_aplikasi', config('app.name', 'Rental Mobil')) }} - @yield('title', 'Beranda')</title>
 
     <link rel="preconnect" href="//fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
         <div class="container">
             <a class="navbar-brand public-brand" href="{{ url('/') }}">
                 <span class="brand-icon"><x-icon name="car" /></span>
-                <span class="brand-text">Rental<span class="text-primary">Mobil</span></span>
+                <span class="brand-text">{{ settings('nama_aplikasi') }}</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -137,16 +137,28 @@
                 <div class="col-lg-4">
                     <div class="public-brand mb-2">
                         <span class="brand-icon"><x-icon name="car" /></span>
-                        <span class="brand-text text-white">Rental<span class="text-primary">Mobil</span></span>
+                        <span class="brand-text text-white">{{ settings('nama_aplikasi') }}</span>
                     </div>
                     <p class="text-white-50 small footer-tagline">
                         {{ settings('slogan') }}
                     </p>
                     <div class="d-flex gap-2">
-                        <a href="#" class="footer-social" aria-label="Facebook"><x-icon name="facebook" /></a>
-                        <a href="#" class="footer-social" aria-label="Instagram"><x-icon name="instagram" /></a>
-                        <a href="#" class="footer-social" aria-label="Twitter"><x-icon name="twitter" /></a>
-                        <a href="#" class="footer-social" aria-label="YouTube"><x-icon name="youtube" /></a>
+                        @if (settings('facebook'))
+                            <a href="{{ settings('facebook') }}" target="_blank" rel="noopener noreferrer"
+                                class="footer-social" aria-label="Facebook"><x-icon name="facebook" /></a>
+                        @endif
+                        @if (settings('instagram'))
+                            <a href="{{ settings('instagram') }}" target="_blank" rel="noopener noreferrer"
+                                class="footer-social" aria-label="Instagram"><x-icon name="instagram" /></a>
+                        @endif
+                        @if (settings('twitter'))
+                            <a href="{{ settings('twitter') }}" target="_blank" rel="noopener noreferrer"
+                                class="footer-social" aria-label="Twitter"><x-icon name="twitter" /></a>
+                        @endif
+                        @if (settings('youtube'))
+                            <a href="{{ settings('youtube') }}" target="_blank" rel="noopener noreferrer"
+                                class="footer-social" aria-label="YouTube"><x-icon name="youtube" /></a>
+                        @endif
                     </div>
                 </div>
                 <div class="col-6 col-lg-2">
@@ -170,9 +182,15 @@
                 <div class="col-lg-4">
                     <h6 class="text-white fw-bold">Kontak</h6>
                     <ul class="list-unstyled text-white-50 small footer-contact mb-0">
-                        <li class="mb-2"><span class="contact-icon"><x-icon name="phone" /></span> {{ settings('no_telepon') }}</li>
-                        <li class="mb-2"><span class="contact-icon"><x-icon name="mail" /></span> {{ settings('email_kontak') }}</li>
-                        <li class="mb-2"><span class="contact-icon"><x-icon name="map-pin" /></span> {{ settings('alamat') }}</li>
+                        <li class="mb-2"><span class="contact-icon"><x-icon name="phone" /></span>
+                            <a href="tel:{{ settings('no_telepon') }}" class="text-white-50 text-decoration-none">{{ settings('no_telepon') }}</a>
+                        </li>
+                        <li class="mb-2"><span class="contact-icon"><x-icon name="mail" /></span>
+                            <a href="mailto:{{ settings('email_kontak') }}" class="text-white-50 text-decoration-none">{{ settings('email_kontak') }}</a>
+                        </li>
+                        <li class="mb-2"><span class="contact-icon"><x-icon name="map-pin" /></span>
+                            <a href="{{ url('kontak') }}" class="text-white-50 text-decoration-none">{{ settings('alamat') }}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -180,8 +198,8 @@
             <div class="footer-bottom">
                 <span class="small text-white-50">&copy; {{ date('Y') }} RentalMobil. Hak cipta dilindungi.</span>
                 <span class="footer-bottom-links small">
-                    <a href="#" class="text-white-50">Kebijakan Privasi</a>
-                    <a href="#" class="text-white-50">Syarat &amp; Ketentuan</a>
+                    <a href="{{ url('kebijakan-privasi') }}" class="text-white-50">Kebijakan Privasi</a>
+                    <a href="{{ url('syarat-ketentuan') }}" class="text-white-50">Syarat &amp; Ketentuan</a>
                 </span>
             </div>
         </div>

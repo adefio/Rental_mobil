@@ -101,7 +101,9 @@
                                 <x-icon name="info" class="icon-sm mt-1" />
                                 <div>
                                     <strong>Pelanggan baru.</strong>
-                                    Data akan otomatis dicatat sebagai pelanggan tanpa akun (tidak perlu registrasi).
+                                    Data akan otomatis dicatat sebagai pelanggan. Jika email cocok dengan
+                                    pelanggan terdaftar, pesanan akan otomatis tersambung ke akunnya
+                                    (muncul di "Pesanan Saya").
                                 </div>
                             </div>
                             <div class="row g-3">

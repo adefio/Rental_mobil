@@ -23,6 +23,7 @@ class PublicService
         return [
             'mobil_tersedia' => $this->mobilRepository->tersedia(8),
             'mobil_populer' => $this->mobilRepository->palingPopuler(4),
+            'mobil_baru' => $this->mobilRepository->terbaru(4),
             'total_mobil' => $this->mobilRepository->count(),
             'total_pengguna' => $this->penggunaRepository->count(),
             'total_transaksi' => $this->transaksiRepository->count(),

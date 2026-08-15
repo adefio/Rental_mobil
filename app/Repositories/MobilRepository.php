@@ -51,6 +51,15 @@ class MobilRepository extends EloquentRepository implements MobilRepositoryInter
         return $query->get();
     }
 
+    public function terbaru(int $limit = 4): \Illuminate\Support\Collection
+    {
+        return $this->query()
+            ->where('status', '!=', 'maintenance')
+            ->orderBy('id', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
     public function katalog(string $search = null): \Illuminate\Support\Collection
     {
         return $this->query()

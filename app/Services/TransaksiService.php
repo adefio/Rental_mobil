@@ -125,6 +125,14 @@ class TransaksiService
             return (int) $data['pengguna_id'];
         }
 
+        if (! empty($data['email_baru'])) {
+            $existing = $this->penggunaRepository->findByEmail($data['email_baru']);
+
+            if ($existing) {
+                return $existing->id;
+            }
+        }
+
         $pengguna = $this->penggunaRepository->create([
             'user_id' => null,
             'nama' => $data['nama_baru'],

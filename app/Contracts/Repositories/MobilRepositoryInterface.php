@@ -10,6 +10,8 @@ interface MobilRepositoryInterface extends RepositoryInterface
 
     public function palingPopuler(int $limit = 5);
 
+    public function terbaru(int $limit = 4);
+
     public function tersedia(int $limit = null): Collection;
 
     public function katalog(string $search = null): Collection;

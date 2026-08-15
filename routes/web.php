@@ -29,6 +29,8 @@ Route::get('/sewa-mobil/{id}', [PublicController::class, 'detail'])->name('mobil
 Route::get('/tentang-kami', [PublicController::class, 'tentang'])->name('tentang');
 Route::get('/kontak', [PublicController::class, 'kontak'])->name('kontak');
 Route::post('/kontak', [PublicController::class, 'kirimPesan'])->name('kontak.kirim');
+Route::get('/kebijakan-privasi', [PublicController::class, 'kebijakanPrivasi'])->name('kebijakan.privasi');
+Route::get('/syarat-ketentuan', [PublicController::class, 'syaratKetentuan'])->name('syarat.ketentuan');
 
 Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/sewa-mobil/{id}/booking', [PublicController::class, 'booking'])->name('booking.store');

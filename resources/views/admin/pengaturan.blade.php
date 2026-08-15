@@ -100,6 +100,67 @@
 
                 <div class="card page-card mb-4">
                     <div class="card-header d-flex align-items-center gap-2">
+                        <span class="profile-section-icon"><x-icon name="send" class="icon-sm" /></span>
+                        <span>Media Sosial</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="text-muted small mb-3">
+                            Tautan media sosial ini tampil di footer situs publik. Kosongkan jika tidak digunakan.
+                        </p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="facebook" class="form-label">Facebook</label>
+                                <input id="facebook" type="url"
+                                    class="form-control @error('facebook') is-invalid @enderror"
+                                    name="facebook" value="{{ old('facebook', $settings['facebook']) }}"
+                                    placeholder="https://facebook.com/halaman-anda">
+
+                                @error('facebook')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="instagram" class="form-label">Instagram</label>
+                                <input id="instagram" type="url"
+                                    class="form-control @error('instagram') is-invalid @enderror"
+                                    name="instagram" value="{{ old('instagram', $settings['instagram']) }}"
+                                    placeholder="https://instagram.com/halaman-anda">
+
+                                @error('instagram')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="twitter" class="form-label">Twitter / X</label>
+                                <input id="twitter" type="url"
+                                    class="form-control @error('twitter') is-invalid @enderror"
+                                    name="twitter" value="{{ old('twitter', $settings['twitter']) }}"
+                                    placeholder="https://twitter.com/halaman-anda">
+
+                                @error('twitter')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="youtube" class="form-label">YouTube</label>
+                                <input id="youtube" type="url"
+                                    class="form-control @error('youtube') is-invalid @enderror"
+                                    name="youtube" value="{{ old('youtube', $settings['youtube']) }}"
+                                    placeholder="https://youtube.com/@channel-anda">
+
+                                @error('youtube')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card page-card mb-4">
+                    <div class="card-header d-flex align-items-center gap-2">
                         <span class="profile-section-icon"><x-icon name="clock" class="icon-sm" /></span>
                         <span>Operasional & Kebijakan</span>
                     </div>

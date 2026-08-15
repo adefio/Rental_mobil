@@ -49,6 +49,16 @@ class PublicController extends Controller
         return view('public.kontak');
     }
 
+    public function kebijakanPrivasi()
+    {
+        return view('public.kebijakan_privasi');
+    }
+
+    public function syaratKetentuan()
+    {
+        return view('public.syarat_ketentuan');
+    }
+
     public function kirimPesan(Request $request)
     {
         $request->validate([

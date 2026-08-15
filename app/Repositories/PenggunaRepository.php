@@ -28,6 +28,11 @@ class PenggunaRepository extends EloquentRepository implements PenggunaRepositor
         return $this->query()->where('user_id', $userId)->first();
     }
 
+    public function findByEmail(string $email)
+    {
+        return $this->query()->where('email', $email)->first();
+    }
+
     public function paginatePelanggan(int $perPage = 10): LengthAwarePaginator
     {
         return $this->query()

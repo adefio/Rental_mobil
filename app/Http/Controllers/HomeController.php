@@ -177,9 +177,17 @@ class HomeController extends Controller
             'email_kontak' => 'nullable|string|email|max:255',
             'tarif_denda_per_hari' => 'nullable|numeric|min:0',
             'jam_operasional' => 'nullable|string|max:100',
+            'facebook' => 'nullable|url|max:255',
+            'instagram' => 'nullable|url|max:255',
+            'twitter' => 'nullable|url|max:255',
+            'youtube' => 'nullable|url|max:255',
         ], [
             'nama_aplikasi.required' => 'Nama aplikasi wajib diisi.',
             'email_kontak.email' => 'Format email tidak valid.',
+            'facebook.url' => 'URL Facebook tidak valid.',
+            'instagram.url' => 'URL Instagram tidak valid.',
+            'twitter.url' => 'URL Twitter tidak valid.',
+            'youtube.url' => 'URL YouTube tidak valid.',
         ]);
 
         app(SettingsService::class)->update($data);

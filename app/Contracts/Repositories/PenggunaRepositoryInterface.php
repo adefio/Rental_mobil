@@ -8,6 +8,8 @@ interface PenggunaRepositoryInterface extends RepositoryInterface
 
     public function findByUserId(int $userId);
 
+    public function findByEmail(string $email);
+
     public function paginatePelanggan(int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
     public function allPelanggan(): \Illuminate\Database\Eloquent\Collection;

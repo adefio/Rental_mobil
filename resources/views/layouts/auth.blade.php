@@ -23,7 +23,7 @@
                     <div class="text-center mb-4">
                         <a href="{{ url('/') }}" class="auth-brand">
                             <span class="brand-icon"><x-icon name="car" /></span>
-                            <span class="brand-text">Rental<span class="text-primary">Mobil</span></span>
+                            <span class="brand-text">{{ settings('nama_aplikasi') }}</span>
                         </a>
                     </div>
 

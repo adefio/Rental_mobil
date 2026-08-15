@@ -41,13 +41,12 @@ class TransaksiController extends Controller
             'status_pembayaran' => 'required|in:pending,lunas,batal',
             'jenis_pelanggan' => 'required|in:terdaftar,baru',
             'nama_baru' => 'required_if:jenis_pelanggan,baru|nullable|string|max:255',
-            'email_baru' => 'nullable|string|email|max:255|unique:pengguna,email',
+            'email_baru' => 'nullable|string|email|max:255',
             'no_telepon_baru' => 'nullable|string|max:20',
             'alamat_baru' => 'nullable|string|max:255',
         ], [
             'pengguna_id.required_if' => 'Pilih pelanggan terdaftar terlebih dahulu.',
             'nama_baru.required_if' => 'Nama pelanggan baru wajib diisi.',
-            'email_baru.unique' => 'Email tersebut sudah terdaftar. Pilih jenis "Pelanggan Terdaftar" atau gunakan email lain.',
         ]);
 
         try {

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $judul }} - RentalMobil</title>
+    <title>{{ $judul }} - {{ settings('nama_aplikasi') }}</title>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
@@ -345,8 +345,8 @@
             <div class="report-brand">
                 <span class="report-brand-icon"><x-icon name="car" /></span>
                 <div>
-                    <div class="report-brand-name">RentalMobil</div>
-                    <div class="report-brand-tagline">Layanan Penyewaan Mobil Terpercaya</div>
+                    <div class="report-brand-name">{{ settings('nama_aplikasi') }}</div>
+                    <div class="report-brand-tagline">{{ settings('slogan') }}</div>
                 </div>
             </div>
             <div class="report-title-block">
@@ -361,8 +361,8 @@
         <div class="report-sign">
             <p>Mengetahui,</p>
             <div class="report-sign-space"></div>
-            <span class="report-sign-name">Admin</span>
-            <div class="report-sign-role">Administrator RentalMobil</div>
+            <span class="report-sign-name">{{ auth()->user()->name }}</span>
+            <div class="report-sign-role">Administrator {{ settings('nama_aplikasi') }}</div>
         </div>
     </div>
 </body>

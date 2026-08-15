@@ -15,6 +15,10 @@ class SettingsService
         'email_kontak' => 'halo@rentalmobil.com',
         'tarif_denda_per_hari' => '100000',
         'jam_operasional' => '08.00 - 20.00 WIB',
+        'facebook' => '',
+        'instagram' => '',
+        'twitter' => '',
+        'youtube' => '',
     ];
 
     public function all(): array
