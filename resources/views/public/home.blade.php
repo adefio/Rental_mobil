@@ -39,7 +39,7 @@
                 <div class="col-lg-6">
                     <div class="hero-visual">
                         <div class="hero-car">
-                            <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                            <img src="{{ gambar_url('hero/hero-fleet.png') }}"
                                 alt="Barisan unit mobil rental" class="hero-fleet-img" loading="lazy"
                                 decoding="async">
                         </div>
@@ -77,7 +77,7 @@
                 <h2 class="section-title">Barisan Unit Mobil Kami</h2>
                 <p class="text-muted mb-0">Seluruh unit dalam satu barisan, siap melayani perjalanan Anda.</p>
             </div>
-            <img src="{{ asset('storage/hero/armada-banner.png') }}" alt="Barisan unit mobil rental"
+            <img src="{{ gambar_url('hero/armada-banner.png') }}" alt="Barisan unit mobil rental"
                 class="armada-banner-img" loading="lazy" decoding="async">
         </div>
     </section>
@@ -98,10 +98,10 @@
                                 <div class="car-card-top">
                                     <div class="car-image">
                                         @if (!empty($m->gambar) && isset($m->gambar[0]))
-                                            <img src="{{ asset('storage/' . $m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
+                                            <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
                                                 class="car-image-img" loading="lazy" decoding="async">
                                         @else
-                                            <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                                            <img src="{{ gambar_url('hero/hero-fleet.png') }}"
                                                 alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
                                                 decoding="async">
                                         @endif
@@ -145,10 +145,10 @@
                                 <div class="car-card-top">
                                     <div class="car-image">
                                         @if (!empty($m->gambar) && isset($m->gambar[0]))
-                                            <img src="{{ asset('storage/' . $m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
+                                            <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
                                                 class="car-image-img" loading="lazy" decoding="async">
                                         @else
-                                            <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                                            <img src="{{ gambar_url('hero/hero-fleet.png') }}"
                                                 alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
                                                 decoding="async">
                                         @endif

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\MobilService;
-use App\Services\PenggunaService;
-use App\Services\TransaksiService;
-use App\Services\PengembalianService;
 use App\Services\ImageService;
+use App\Services\MobilService;
+use App\Services\PengembalianService;
+use App\Services\PenggunaService;
 use App\Services\SettingsService;
+use App\Services\TransaksiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -111,7 +111,7 @@ class HomeController extends Controller
 
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
@@ -141,7 +141,7 @@ class HomeController extends Controller
             $penggunaData['foto_profil'] = app(ImageService::class)->processProfileImage($request->file('foto_profil'));
 
             if ($oldFoto && $oldFoto !== $penggunaData['foto_profil']) {
-                Storage::disk('public')->delete($oldFoto);
+                Storage::disk(config('filesystems.storage_disk'))->delete($oldFoto);
             }
         }
 

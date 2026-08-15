@@ -15,8 +15,7 @@ class PublicController extends Controller
         protected PublicService $service,
         protected ImageService $imageService,
         protected PesanService $pesanService
-    ) {
-    }
+    ) {}
 
     public function home()
     {
@@ -116,8 +115,8 @@ class PublicController extends Controller
 
         $success = $this->service->konfirmasiPembayaran($id, $path, $request->user());
 
-        if (!$success) {
-            Storage::disk('public')->delete($path);
+        if (! $success) {
+            Storage::disk(config('filesystems.storage_disk'))->delete($path);
 
             return back()->with('error', 'Pembayaran tidak dapat dikonfirmasi.');
         }
@@ -138,7 +137,7 @@ class PublicController extends Controller
 
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
@@ -168,7 +167,7 @@ class PublicController extends Controller
             $penggunaData['foto_profil'] = $this->imageService->processProfileImage($request->file('foto_profil'));
 
             if ($oldFoto && $oldFoto !== $penggunaData['foto_profil']) {
-                Storage::disk('public')->delete($oldFoto);
+                Storage::disk(config('filesystems.storage_disk'))->delete($oldFoto);
             }
         }
 

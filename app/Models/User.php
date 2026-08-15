@@ -54,7 +54,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): ?string
     {
         return optional($this->pengguna)->foto_profil
-            ? asset('storage/' . $this->pengguna->foto_profil)
+            ? gambar_url($this->pengguna->foto_profil)
             : null;
     }
 

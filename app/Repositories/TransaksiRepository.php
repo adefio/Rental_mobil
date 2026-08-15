@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\TransaksiRepositoryInterface;
 use App\Models\Transaksi;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiRepository extends EloquentRepository implements TransaksiRepositoryInterface
 {
@@ -42,19 +43,28 @@ class TransaksiRepository extends EloquentRepository implements TransaksiReposit
 
     public function pendapatanLunasGrouped(string $since, string $dateFormat): array
     {
+        $groupExpr = DB::connection()->getDriverName() === 'pgsql'
+            ? "TO_CHAR(tanggal_pemesanan, '".$this->toPostgresFormat($dateFormat)."')"
+            : "DATE_FORMAT(tanggal_pemesanan, '".$dateFormat."')";
+
         return $this->query()
-            ->selectRaw("DATE_FORMAT(tanggal_pemesanan, '" . $dateFormat . "') as periode")
+            ->selectRaw($groupExpr.' as periode')
             ->selectRaw('SUM(total_harga) as total')
             ->whereIn('status_pembayaran', ['lunas', 'selesai'])
             ->where('tanggal_pemesanan', '>=', $since)
             ->groupBy('periode')
             ->orderBy('periode')
             ->pluck('total', 'periode')
-            ->map(fn($total) => (float) $total)
+            ->map(fn ($total) => (float) $total)
             ->all();
     }
 
-    public function adaTabrakanTanggal(int $mobilId, string $tanggalMulai, string $tanggalSelesai, int $kecualiTransaksiId = null): bool
+    private function toPostgresFormat(string $dateFormat): string
+    {
+        return str_replace(['%Y', '%m', '%d', '%M', '%D'], ['YYYY', 'MM', 'DD', 'Month', 'DD'], $dateFormat);
+    }
+
+    public function adaTabrakanTanggal(int $mobilId, string $tanggalMulai, string $tanggalSelesai, ?int $kecualiTransaksiId = null): bool
     {
         $query = $this->query()
             ->where('mobil_id', $mobilId)

@@ -22,20 +22,20 @@
                 <div class="col-lg-7">
                     <div class="car-detail-visual mb-4">
                         @if (!empty($mobil->gambar))
-                            <img id="gambarUtama" src="{{ asset('storage/' . $mobil->gambar[0]) }}"
+                            <img id="gambarUtama" src="{{ gambar_url($mobil->gambar[0]) }}"
                                 alt="{{ $mobil->nama_mobil }}" class="detail-car-img" fetchpriority="high">
                             @if (count($mobil->gambar) > 1)
                                 <div class="detail-gallery d-flex gap-2 mt-3 flex-wrap justify-content-center">
                                     @foreach ($mobil->gambar as $i => $path)
                                         <button type="button" class="detail-thumb-btn {{ $i === 0 ? 'active' : '' }}"
-                                            data-src="{{ asset('storage/' . $path) }}" aria-label="Lihat gambar {{ $i + 1 }}">
-                                            <img src="{{ asset('storage/' . $path) }}" alt="Gambar {{ $i + 1 }}" loading="lazy">
+                                            data-src="{{ gambar_url($path) }}" aria-label="Lihat gambar {{ $i + 1 }}">
+                                            <img src="{{ gambar_url($path) }}" alt="Gambar {{ $i + 1 }}" loading="lazy">
                                         </button>
                                     @endforeach
                                 </div>
                             @endif
                         @else
-                            <img src="{{ asset('storage/hero/hero-fleet.png') }}" alt="{{ $mobil->nama_mobil }}"
+                            <img src="{{ gambar_url('hero/hero-fleet.png') }}" alt="{{ $mobil->nama_mobil }}"
                                 class="detail-car-img" loading="lazy" decoding="async">
                         @endif
                     </div>

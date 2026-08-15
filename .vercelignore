@@ -1,0 +1,23 @@
+# Git & Vercel
+.git
+.vercel
+
+# Dependencies (di-generate ulang saat build)
+node_modules
+vendor
+
+# Env lokal (tidak pernah di-upload)
+.env
+.env.*
+!.env.example
+
+# Storage lokal
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+storage/app/public
+
+# Testing & dokumentasi lokal
+tests
+phpunit.xml

@@ -73,7 +73,7 @@
                                     <input class="form-check-input" type="checkbox" name="gambar_sisa[]"
                                         value="{{ $path }}" id="gambar-{{ Str::slug($path) }}" checked>
                                     <label class="form-check-label" for="gambar-{{ Str::slug($path) }}">
-                                        <img src="{{ asset('storage/' . $path) }}" alt="Gambar Mobil"
+                                        <img src="{{ gambar_url($path) }}" alt="Gambar Mobil"
                                             class="gambar-edit-thumb" loading="lazy" decoding="async">
                                         <small class="d-block text-danger">Hapus</small>
                                     </label>

@@ -12,8 +12,7 @@ class MobilController extends Controller
     public function __construct(
         protected MobilService $service,
         protected ImageService $imageService
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -35,7 +34,7 @@ class MobilController extends Controller
         $data = $request->validate([
             'nama_mobil' => 'required|string|max:255',
             'merk' => 'required|string|max:255',
-            'tahun' => 'required|numeric|min:1990|max:' . date('Y'),
+            'tahun' => 'required|numeric|min:1990|max:'.date('Y'),
             'harga_sewa' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
             'status' => 'nullable|in:tersedia,disewa,maintenance',
@@ -71,7 +70,7 @@ class MobilController extends Controller
         $data = $request->validate([
             'nama_mobil' => 'required|string|max:255',
             'merk' => 'required|string|max:255',
-            'tahun' => 'required|numeric|min:1990|max:' . date('Y'),
+            'tahun' => 'required|numeric|min:1990|max:'.date('Y'),
             'harga_sewa' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
             'status' => 'nullable|in:tersedia,disewa,maintenance',
@@ -113,7 +112,7 @@ class MobilController extends Controller
     protected function hapusGambarTerbuang(array $lama, array $baru): void
     {
         foreach (array_diff($lama, $baru) as $path) {
-            Storage::disk('public')->delete($path);
+            Storage::disk(config('filesystems.storage_disk'))->delete($path);
         }
     }
 
@@ -132,7 +131,7 @@ class MobilController extends Controller
         $mobil = $this->service->findForEdit($id);
 
         foreach ($mobil->gambar ?? [] as $path) {
-            Storage::disk('public')->delete($path);
+            Storage::disk(config('filesystems.storage_disk'))->delete($path);
         }
 
         $this->service->delete($id);

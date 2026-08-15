@@ -16,8 +16,10 @@ class ImageService
 
     private const PROFILE_QUALITY = 95;
 
-    public function processCarImage(UploadedFile $file, string $disk = 'public', string $dir = 'mobil'): string
+    public function processCarImage(UploadedFile $file, ?string $disk = null, string $dir = 'mobil'): string
     {
+        $disk = $this->resolveDisk($disk);
+
         $info = @getimagesize($file->getRealPath());
 
         if ($info === false) {
@@ -53,8 +55,10 @@ class ImageService
         return $this->storeTemp($resized, $temp, $disk, $dir);
     }
 
-    public function processPaymentProof(UploadedFile $file, string $disk = 'public', string $dir = 'bukti'): string
+    public function processPaymentProof(UploadedFile $file, ?string $disk = null, string $dir = 'bukti'): string
     {
+        $disk = $this->resolveDisk($disk);
+
         $info = @getimagesize($file->getRealPath());
 
         if ($info === false || $info[0] <= self::CAR_MAX_WIDTH) {
@@ -85,8 +89,10 @@ class ImageService
         return $this->storeTemp($resized, $temp, $disk, $dir);
     }
 
-    public function processProfileImage(UploadedFile $file, string $disk = 'public', string $dir = 'profil'): string
+    public function processProfileImage(UploadedFile $file, ?string $disk = null, string $dir = 'profil'): string
     {
+        $disk = $this->resolveDisk($disk);
+
         $info = @getimagesize($file->getRealPath());
 
         if ($info === false) {
@@ -130,6 +136,11 @@ class ImageService
         return $this->storeTemp($cropped, $temp, $disk, $dir);
     }
 
+    private function resolveDisk(?string $disk): string
+    {
+        return $disk ?? config('filesystems.storage_disk');
+    }
+
     private function decode(UploadedFile $file, string $mime): ?\GdImage
     {
         return match ($mime) {
@@ -150,7 +161,7 @@ class ImageService
 
     private function applyOrientation(\GdImage $image, string $mime, UploadedFile $file): \GdImage
     {
-        if ($mime !== 'image/jpeg' || !function_exists('exif_read_data')) {
+        if ($mime !== 'image/jpeg' || ! function_exists('exif_read_data')) {
             return $image;
         }
 
@@ -187,7 +198,7 @@ class ImageService
             default => 'jpg',
         };
 
-        $temp = tempnam(sys_get_temp_dir(), 'img') . '.' . $ext;
+        $temp = tempnam(sys_get_temp_dir(), 'img').'.'.$ext;
 
         match ($mime) {
             'image/png' => imagepng($image, $temp, 6),
@@ -202,7 +213,7 @@ class ImageService
     {
         imagedestroy($image);
 
-        $stored = Storage::disk($disk)->putFile($dir, new File($temp), 'public');
+        $stored = Storage::disk($disk)->putFile($dir, new File($temp));
 
         @unlink($temp);
 

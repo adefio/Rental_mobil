@@ -31,7 +31,7 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center gap-3">
                         @if (!empty($transaksi->mobil->gambar) && isset($transaksi->mobil->gambar[0]))
-                            <img src="{{ asset('storage/' . $transaksi->mobil->gambar[0]) }}" alt="Gambar mobil"
+                            <img src="{{ gambar_url($transaksi->mobil->gambar[0]) }}" alt="Gambar mobil"
                                 class="detail-mobil-thumb" loading="lazy" decoding="async">
                         @else
                             <div class="detail-mobil-thumb d-flex align-items-center justify-content-center bg-light">
@@ -115,9 +115,9 @@
                         <span>Bukti Pembayaran</span>
                     </div>
                     <div class="card-body p-4">
-                        <a href="{{ asset('storage/' . $transaksi->bukti_pembayaran) }}" target="_blank"
+                        <a href="{{ gambar_url($transaksi->bukti_pembayaran) }}" target="_blank"
                             rel="noopener" class="d-inline-block">
-                            <img src="{{ asset('storage/' . $transaksi->bukti_pembayaran) }}" alt="Bukti pembayaran"
+                            <img src="{{ gambar_url($transaksi->bukti_pembayaran) }}" alt="Bukti pembayaran"
                                 class="bukti-thumb" loading="lazy" decoding="async">
                         </a>
                     </div>

@@ -15,7 +15,7 @@
             <div class="row align-items-center g-5">
                 <div class="col-lg-5">
                     <div class="car-detail-visual">
-                        <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                        <img src="{{ gambar_url('hero/hero-fleet.png') }}"
                             alt="Barisan unit mobil rental" class="detail-car-img detail-fleet-img"
                             loading="lazy" decoding="async">
                     </div>
