@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\MobilRepositoryInterface;
 use App\Contracts\Repositories\PengembalianRepositoryInterface;
 use App\Contracts\Repositories\TransaksiRepositoryInterface;
 use Illuminate\Support\Collection;
@@ -10,7 +11,8 @@ class PengembalianService
 {
     public function __construct(
         protected PengembalianRepositoryInterface $repository,
-        protected TransaksiRepositoryInterface $transaksiRepository
+        protected TransaksiRepositoryInterface $transaksiRepository,
+        protected MobilRepositoryInterface $mobilRepository
     ) {
     }
 
@@ -49,19 +51,55 @@ class PengembalianService
     {
         $data = $this->resolveDenda($data);
 
-        return $this->repository->create($data);
+        $pengembalian = $this->repository->create($data);
+
+        $this->tutupTransaksi((int) $data['transaksi_id']);
+
+        return $pengembalian;
     }
 
     public function update(int $id, array $data)
     {
+        $pengembalian = $this->repository->findOrFail($id);
+
         $data = $this->resolveDenda($data);
 
-        return $this->repository->update($id, $data);
+        $pengembalian = $this->repository->update($id, $data);
+
+        if ((int) $data['transaksi_id'] !== (int) $pengembalian->transaksi_id) {
+            $this->tutupTransaksi((int) $data['transaksi_id']);
+        }
+
+        return $pengembalian;
     }
 
     public function delete(int $id): bool
     {
-        return $this->repository->delete($id);
+        $pengembalian = $this->repository->findOrFail($id);
+
+        $deleted = $this->repository->delete($id);
+
+        if ($deleted) {
+            $this->bukaKembaliTransaksi((int) $pengembalian->transaksi_id);
+        }
+
+        return $deleted;
+    }
+
+    protected function tutupTransaksi(int $transaksiId): void
+    {
+        $transaksi = $this->transaksiRepository->findOrFail($transaksiId);
+
+        $this->transaksiRepository->update($transaksiId, ['status_pembayaran' => 'selesai']);
+        $this->mobilRepository->update($transaksi->mobil_id, ['status' => 'tersedia']);
+    }
+
+    protected function bukaKembaliTransaksi(int $transaksiId): void
+    {
+        $transaksi = $this->transaksiRepository->findOrFail($transaksiId);
+
+        $this->transaksiRepository->update($transaksiId, ['status_pembayaran' => 'pending']);
+        $this->mobilRepository->update($transaksi->mobil_id, ['status' => 'disewa']);
     }
 
     protected function resolveDenda(array $data): array

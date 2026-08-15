@@ -93,6 +93,11 @@ abstract class EloquentRepository implements RepositoryInterface
         return (float) $this->query()->where($column, $value)->sum($sumColumn);
     }
 
+    public function sumWhereIn(string $column, array $values, string $sumColumn): float
+    {
+        return (float) $this->query()->whereIn($column, $values)->sum($sumColumn);
+    }
+
     public function pluck(string $value, string $key): Collection
     {
         return $this->query()->pluck($value, $key);

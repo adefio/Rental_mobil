@@ -29,7 +29,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="denda_telat">Denda Telat (Rp)</label>
-                            <input id="denda_telat" class="form-control" type="number" step="0.01"
+                            <input id="denda_telat" class="form-control" type="number" step="1"
                                 name="denda_telat" value="{{ old('denda_telat') }}">
                             <span class="text-danger">{{ $errors->first('denda_telat') }}</span>
                         </div>
@@ -37,7 +37,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="biaya_kerusakan">Biaya Kerusakan (Rp)</label>
-                            <input id="biaya_kerusakan" class="form-control" type="number" step="0.01"
+                            <input id="biaya_kerusakan" class="form-control" type="number" step="1"
                                 name="biaya_kerusakan" value="{{ old('biaya_kerusakan') }}">
                             <span class="text-danger">{{ $errors->first('biaya_kerusakan') }}</span>
                         </div>

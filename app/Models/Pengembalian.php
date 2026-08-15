@@ -34,7 +34,7 @@ class Pengembalian extends Model
      */
     public function hitungDendaTelat($tanggal_seharusnya_kembali, $tanggal_pengembalian)
     {
-        $tarif_denda_per_hari = 50000; // Tarif denda per hari, bisa disesuaikan dengan kebutuhan
+        $tarif_denda_per_hari = (int) settings('tarif_denda_per_hari', 50000);
 
         // Menghitung selisih hari antara tanggal pengembalian dan tanggal seharusnya kembali
         $tanggal_seharusnya_kembali = Carbon::parse($tanggal_seharusnya_kembali);

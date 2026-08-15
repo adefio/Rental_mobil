@@ -40,7 +40,7 @@
                     <thead class="table-light">
                         <tr>
                             <th v-for="col in visibleColumns" :key="col.key">{{ col.label }}</th>
-                            <th v-if="actions || editRoute || deleteRoute" class="text-end">Aksi</th>
+                            <th v-if="actions || editRoute || deleteRoute || detailRoute" class="text-end">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,7 +76,20 @@
                                     {{ row[col.key] }}
                                 </template>
                             </td>
-                            <td v-if="actions || editRoute || deleteRoute" class="text-end text-nowrap">
+                            <td v-if="actions || editRoute || deleteRoute || detailRoute" class="text-end text-nowrap">
+                                <a
+                                    v-if="detailRoute"
+                                    :href="detailRoute.replace('__ID__', row.id)"
+                                    class="btn btn-sm btn-outline-primary me-1 d-inline-flex align-items-center gap-1"
+                                    aria-label="Lihat detail"
+                                >
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    Detail
+                                </a>
                                 <a
                                     v-if="editRoute"
                                     :href="editRoute.replace('__ID__', row.id)"
@@ -167,6 +180,7 @@ export default {
         createLabel: { type: String, default: 'Tambah' },
         editRoute: { type: String, default: '' },
         deleteRoute: { type: String, default: '' },
+        detailRoute: { type: String, default: '' },
         actions: { type: Boolean, default: false },
         pagination: {
             type: Object,
@@ -197,7 +211,7 @@ export default {
             });
         },
         columnCount() {
-            return this.visibleColumns.length + ((this.actions || this.editRoute || this.deleteRoute) ? 1 : 0);
+            return this.visibleColumns.length + ((this.actions || this.editRoute || this.deleteRoute || this.detailRoute) ? 1 : 0);
         },
         shownFrom() {
             if (!this.pagination.total) return 0;

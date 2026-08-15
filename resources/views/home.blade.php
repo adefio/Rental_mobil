@@ -63,6 +63,8 @@
                                         <td>
                                             @if ($t->status_pembayaran == 'lunas')
                                                 <span class="badge bg-success badge-status">Lunas</span>
+                                            @elseif ($t->status_pembayaran == 'selesai')
+                                                <span class="badge bg-info text-dark badge-status">Selesai</span>
                                             @elseif ($t->status_pembayaran == 'pending')
                                                 <span class="badge bg-warning text-dark badge-status">Pending</span>
                                             @else

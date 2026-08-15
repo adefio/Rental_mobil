@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ImageService;
+use App\Services\PesanService;
 use App\Services\PublicService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,8 @@ class PublicController extends Controller
 {
     public function __construct(
         protected PublicService $service,
-        protected ImageService $imageService
+        protected ImageService $imageService,
+        protected PesanService $pesanService
     ) {
     }
 
@@ -52,8 +54,12 @@ class PublicController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email',
+            'no_telepon' => 'nullable|string|max:20',
+            'subjek' => 'nullable|string|max:255',
             'pesan' => 'required|string',
         ]);
+
+        $this->pesanService->store($request->only('nama', 'email', 'no_telepon', 'subjek', 'pesan'));
 
         return back()->with('pesan', 'Terima kasih! Pesan Anda telah kami terima.');
     }
@@ -68,7 +74,7 @@ class PublicController extends Controller
         try {
             $transaksi = $this->service->createBooking($id, $data, $request->user());
         } catch (\DomainException $e) {
-            return back()->with('pesan', $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
 
         return redirect()->route('pesanan.saya')->with('pesan', 'Pemesanan berhasil dibuat. Silakan lakukan pembayaran.');
@@ -85,9 +91,28 @@ class PublicController extends Controller
     {
         $success = $this->service->batalkanPesanan($id, $request->user());
 
-        return back()->with('pesan', $success
+        return back()->with($success ? 'pesan' : 'error', $success
             ? 'Pemesanan berhasil dibatalkan.'
             : 'Pemesanan tidak dapat dibatalkan.');
+    }
+
+    public function konfirmasiPembayaran(Request $request, int $id)
+    {
+        $data = $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ]);
+
+        $path = $this->imageService->processPaymentProof($request->file('bukti_pembayaran'));
+
+        $success = $this->service->konfirmasiPembayaran($id, $path, $request->user());
+
+        if (!$success) {
+            Storage::disk('public')->delete($path);
+
+            return back()->with('error', 'Pembayaran tidak dapat dikonfirmasi.');
+        }
+
+        return back()->with('pesan', 'Bukti pembayaran terkirim. Admin akan memverifikasi pembayaran Anda.');
     }
 
     public function pengaturanAkun()

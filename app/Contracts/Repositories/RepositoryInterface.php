@@ -29,4 +29,6 @@ interface RepositoryInterface
     public function sum(string $column): float;
 
     public function sumWhere(string $column, $value, string $sumColumn): float;
+
+    public function sumWhereIn(string $column, array $values, string $sumColumn): float;
 }

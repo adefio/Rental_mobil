@@ -50,9 +50,23 @@ class TransaksiController extends Controller
             'email_baru.unique' => 'Email tersebut sudah terdaftar. Pilih jenis "Pelanggan Terdaftar" atau gunakan email lain.',
         ]);
 
-        $this->service->store($data);
+        try {
+            $this->service->store($data);
+        } catch (\DomainException $e) {
+            return back()->with('error', $e->getMessage())->withInput();
+        }
 
         return back()->with('pesan', 'Pesanan berhasil diterima');
+    }
+
+    public function show($id)
+    {
+        $judul = 'Detail Transaksi';
+
+        return view('transaksi_show', array_merge(
+            ['judul' => $judul],
+            $this->service->showData($id)
+        ));
     }
 
     public function edit($id)
@@ -77,9 +91,24 @@ class TransaksiController extends Controller
             'status_pembayaran' => 'required|in:pending,lunas,batal',
         ]);
 
-        $this->service->update($id, $data);
+        try {
+            $this->service->update($id, $data);
+        } catch (\DomainException $e) {
+            return back()->with('error', $e->getMessage())->withInput();
+        }
 
         return back()->with('pesan', 'Data transaksi berhasil diupdate');
+    }
+
+    public function konfirmasiBayar($id)
+    {
+        try {
+            $this->service->konfirmasiBayar($id);
+        } catch (\DomainException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        return back()->with('pesan', 'Pembayaran dikonfirmasi. Transaksi berstatus lunas.');
     }
 
     public function laporan()

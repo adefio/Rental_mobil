@@ -34,7 +34,7 @@ class HomeController extends Controller
             'mobil' => $mobilRepo->count(),
             'pengguna' => $penggunaRepo->count(),
             'transaksi' => $transaksiRepo->count(),
-            'pendapatan' => $transaksiRepo->sumWhere('status_pembayaran', 'lunas', 'total_harga'),
+            'pendapatan' => $transaksiRepo->sumWhereIn('status_pembayaran', ['lunas', 'selesai'], 'total_harga'),
         ];
 
         $pendapatanHarian = $this->buildPendapatanSeries(

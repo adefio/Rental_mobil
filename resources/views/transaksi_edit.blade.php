@@ -130,6 +130,8 @@
                                     @selected(($transaksi->status_pembayaran ?? old('status_pembayaran')) == 'pending')>Pending</option>
                                 <option value="lunas"
                                     @selected(($transaksi->status_pembayaran ?? old('status_pembayaran')) == 'lunas')>Lunas</option>
+                                <option value="selesai"
+                                    @selected(($transaksi->status_pembayaran ?? old('status_pembayaran')) == 'selesai')>Selesai</option>
                                 <option value="batal"
                                     @selected(($transaksi->status_pembayaran ?? old('status_pembayaran')) == 'batal')>Batal</option>
                             </select>

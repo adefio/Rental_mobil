@@ -20,6 +20,7 @@
         data-rows='@json($transaksi->items())'
         data-edit-route="{{ url('transaksi/__ID__/edit') }}"
         data-delete-route="{{ url('transaksi/__ID__') }}"
+        data-detail-route="{{ url('transaksi/__ID__') }}"
         data-pagination='@json($pagination)'
         data-pagination-path="{{ $transaksi->path() }}"
         data-columns='@json($columns)'

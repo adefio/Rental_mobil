@@ -9,8 +9,8 @@
 
     <title>{{ config('app.name', 'Rental Mobil') }} - @yield('title', 'Beranda')</title>
 
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800" rel="stylesheet">
+    <link rel="preconnect" href="//fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -114,6 +114,15 @@
             <div class="container mt-3">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ Session::get('pesan') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if (Session::has('error'))
+            <div class="container mt-3">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ Session::get('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>

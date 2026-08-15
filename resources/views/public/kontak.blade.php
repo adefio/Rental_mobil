@@ -86,6 +86,24 @@
                                         <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label for="no_telepon" class="form-label fw-semibold">No. Telepon <span class="text-muted">(opsional)</span></label>
+                                    <input type="text" id="no_telepon" name="no_telepon"
+                                        class="form-control @error('no_telepon') is-invalid @enderror"
+                                        value="{{ old('no_telepon') }}" placeholder="08xx-xxxx-xxxx">
+                                    @error('no_telepon')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subjek" class="form-label fw-semibold">Subjek <span class="text-muted">(opsional)</span></label>
+                                    <input type="text" id="subjek" name="subjek"
+                                        class="form-control @error('subjek') is-invalid @enderror"
+                                        value="{{ old('subjek') }}">
+                                    @error('subjek')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
                                 <div class="mb-4">
                                     <label for="pesan" class="form-label fw-semibold">Pesan</label>
                                     <textarea id="pesan" name="pesan" rows="4"

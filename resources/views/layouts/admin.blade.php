@@ -12,8 +12,8 @@
 
     <title>{{ config('app.name', 'Laravel') }} - @yield('title', 'Dashboard')</title>
 
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link rel="preconnect" href="//fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700&display=swap" rel="stylesheet">
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -93,6 +93,16 @@
                 <div class="nav-section-label">Lainnya</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->is('pesan*') ? 'active' : '' }}" href="{{ url('pesan') }}">
+                            <i class="nav-icon"><x-icon name="message-circle" /></i> Pesan Masuk
+                            @if (app(\App\Contracts\Repositories\PesanRepositoryInterface::class)->jumlahBelumDibaca() > 0)
+                                <span class="badge bg-danger rounded-pill ms-auto">
+                                    {{ app(\App\Contracts\Repositories\PesanRepositoryInterface::class)->jumlahBelumDibaca() }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->is('bantuan*') ? 'active' : '' }}" href="{{ url('bantuan') }}">
                             <i class="nav-icon"><x-icon name="book" /></i> Bantuan & Panduan
                         </a>
@@ -171,6 +181,13 @@
                 @if (Session::has('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ Session::get('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if (Session::has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ Session::get('error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif

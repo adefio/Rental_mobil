@@ -33,8 +33,8 @@ class PengembalianController extends Controller
     {
         $data = $request->validate([
             'transaksi_id' => 'required|exists:transaksi,id',
-            'denda_telat' => 'nullable|numeric|min:0',
-            'biaya_kerusakan' => 'nullable|numeric|min:0',
+            'denda_telat' => 'nullable|integer|min:0',
+            'biaya_kerusakan' => 'nullable|integer|min:0',
             'deskripsi_kerusakan' => 'nullable|string|max:255',
             'tanggal_pengembalian' => 'required|date',
         ]);
@@ -58,8 +58,8 @@ class PengembalianController extends Controller
     {
         $data = $request->validate([
             'transaksi_id' => 'required|exists:transaksi,id',
-            'denda_telat' => 'nullable|numeric|min:0',
-            'biaya_kerusakan' => 'nullable|numeric|min:0',
+            'denda_telat' => 'nullable|integer|min:0',
+            'biaya_kerusakan' => 'nullable|integer|min:0',
             'deskripsi_kerusakan' => 'nullable|string|max:255',
             'tanggal_pengembalian' => 'required|date',
         ]);

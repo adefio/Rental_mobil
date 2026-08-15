@@ -38,7 +38,11 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="hero-visual">
-                        <div class="hero-car"><x-icon name="car" class="icon-hero-car" /></div>
+                        <div class="hero-car">
+                            <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                                alt="Barisan unit mobil rental" class="hero-fleet-img" loading="lazy"
+                                decoding="async">
+                        </div>
                         <div class="hero-card hero-card-1">
                             <div class="hero-card-icon"><x-icon name="check-circle" /></div>
                             <div>
@@ -66,6 +70,18 @@
         </div>
     </section>
 
+    <section class="armada-band">
+        <div class="container">
+            <div class="text-center mb-4">
+                <span class="section-label">Armada Lengkap</span>
+                <h2 class="section-title">Barisan Unit Mobil Kami</h2>
+                <p class="text-muted mb-0">Seluruh unit dalam satu barisan, siap melayani perjalanan Anda.</p>
+            </div>
+            <img src="{{ asset('storage/hero/armada-banner.png') }}" alt="Barisan unit mobil rental"
+                class="armada-banner-img" loading="lazy" decoding="async">
+        </div>
+    </section>
+
     <section class="py-5">
         <div class="container">
             <div class="text-center mb-4">
@@ -85,7 +101,9 @@
                                             <img src="{{ asset('storage/' . $m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
                                                 class="car-image-img" loading="lazy" decoding="async">
                                         @else
-                                            <x-icon name="car" class="icon-car-placeholder" />
+                                            <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                                                alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
+                                                decoding="async">
                                         @endif
                                     </div>
                                     <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>

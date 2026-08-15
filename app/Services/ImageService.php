@@ -53,6 +53,38 @@ class ImageService
         return $this->storeTemp($resized, $temp, $disk, $dir);
     }
 
+    public function processPaymentProof(UploadedFile $file, string $disk = 'public', string $dir = 'bukti'): string
+    {
+        $info = @getimagesize($file->getRealPath());
+
+        if ($info === false || $info[0] <= self::CAR_MAX_WIDTH) {
+            return $file->store($dir, $disk);
+        }
+
+        $image = $this->decode($file, $info['mime']);
+
+        if ($image === null) {
+            return $file->store($dir, $disk);
+        }
+
+        $image = $this->applyOrientation($image, $info['mime'], $file);
+
+        $w = imagesx($image);
+        $h = imagesy($image);
+        $nw = self::CAR_MAX_WIDTH;
+        $nh = (int) round($h * self::CAR_MAX_WIDTH / $w);
+
+        $resized = imagecreatetruecolor($nw, $nh);
+        $this->prepareTransparency($resized, $info['mime']);
+
+        imagecopyresampled($resized, $image, 0, 0, 0, 0, $nw, $nh, $w, $h);
+        imagedestroy($image);
+
+        $temp = $this->writeTemp($resized, $info['mime'], self::CAR_QUALITY);
+
+        return $this->storeTemp($resized, $temp, $disk, $dir);
+    }
+
     public function processProfileImage(UploadedFile $file, string $disk = 'public', string $dir = 'profil'): string
     {
         $info = @getimagesize($file->getRealPath());

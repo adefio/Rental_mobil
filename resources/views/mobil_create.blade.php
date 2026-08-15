@@ -51,7 +51,7 @@
 
                 <div class="form-group">
                     <label for="harga_sewa">Harga Sewa (Rp)</label>
-                    <input id="harga_sewa" class="form-control" type="number" step="0.01" name="harga_sewa"
+                    <input id="harga_sewa" class="form-control" type="number" step="1" name="harga_sewa"
                         value="{{ old('harga_sewa') }}">
                     <span class="text-danger">{{ $errors->first('harga_sewa') }}</span>
                 </div>
@@ -67,6 +67,7 @@
                     <input id="gambar" class="form-control" type="file" name="gambar[]" multiple
                         accept="image/jpeg,image/png,image/jpg,image/webp">
                     <small class="form-text text-muted">Format: JPG, PNG, WEBP. Maks 2MB per file. Bisa pilih lebih dari satu.</small>
+                    <div id="gambarPreview" class="gambar-preview"></div>
                     <span class="text-danger">{{ $errors->first('gambar.*') ?: $errors->first('gambar') }}</span>
                 </div>
 
@@ -76,4 +77,23 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('gambar')?.addEventListener('change', function () {
+            const container = document.getElementById('gambarPreview');
+            if (!container) return;
+            container.innerHTML = '';
+            Array.from(this.files || []).forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Pratinjau gambar';
+                    img.className = 'gambar-preview-item';
+                    container.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 @endsection

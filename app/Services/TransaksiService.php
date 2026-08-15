@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\Repositories\MobilRepositoryInterface;
 use App\Contracts\Repositories\PenggunaRepositoryInterface;
 use App\Contracts\Repositories\TransaksiRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class TransaksiService
@@ -44,6 +45,25 @@ class TransaksiService
         return $data;
     }
 
+    public function showData(int $id): array
+    {
+        $transaksi = $this->repository->findOrFail($id);
+        $transaksi->load('maintenance');
+
+        return ['transaksi' => $transaksi];
+    }
+
+    public function konfirmasiBayar(int $id)
+    {
+        $transaksi = $this->repository->findOrFail($id);
+
+        if ($transaksi->status_pembayaran !== 'pending') {
+            throw new \DomainException('Hanya transaksi berstatus pending yang dapat dikonfirmasi.');
+        }
+
+        return $this->repository->update($id, ['status_pembayaran' => 'lunas']);
+    }
+
     public function laporanData(): Collection
     {
         return $this->repository->all();
@@ -53,13 +73,15 @@ class TransaksiService
     {
         $penggunaId = $this->resolvePenggunaId($data);
 
+        $this->cekTumpangTindih($data);
+
         $transaksi = $this->repository->create([
             'pengguna_id' => $penggunaId,
             'mobil_id' => $data['mobil_id'],
             'tanggal_pemesanan' => $data['tanggal_pemesanan'],
             'tanggal_mulai' => $data['tanggal_mulai'],
             'tanggal_selesai' => $data['tanggal_selesai'],
-            'total_harga' => $data['total_harga'],
+            'total_harga' => $this->hitungTotal($data),
             'status_pembayaran' => $data['status_pembayaran'],
         ]);
 
@@ -73,13 +95,13 @@ class TransaksiService
         $transaksi = $this->repository->findOrFail($id);
         $statusLama = $transaksi->status_pembayaran;
 
-        $transaksi = $this->repository->update($id, $data);
+        $this->cekTumpangTindih($data, $id);
 
-        if ($data['status_pembayaran'] === 'batal' && $statusLama !== 'batal') {
-            $this->mobilRepository->update($transaksi->mobil_id, ['status' => 'tersedia']);
-        } elseif ($data['status_pembayaran'] !== 'batal' && $statusLama === 'batal') {
-            $this->mobilRepository->update($transaksi->mobil_id, ['status' => 'disewa']);
-        }
+        $transaksi = $this->repository->update($id, array_merge($data, [
+            'total_harga' => $this->hitungTotal($data),
+        ]));
+
+        $this->syncStatusMobilOnUpdate($transaksi, $statusLama, $data['status_pembayaran']);
 
         return $transaksi;
     }
@@ -119,8 +141,47 @@ class TransaksiService
     protected function syncStatusMobil(int $mobilId, string $statusPembayaran): void
     {
         $this->mobilRepository->update($mobilId, [
-            'status' => $statusPembayaran === 'batal' ? 'tersedia' : 'disewa',
+            'status' => in_array($statusPembayaran, ['batal', 'selesai'], true) ? 'tersedia' : 'disewa',
         ]);
+    }
+
+    protected function syncStatusMobilOnUpdate($transaksi, string $statusLama, string $statusBaru): void
+    {
+        $mobilDuluBebas = in_array($statusLama, ['batal', 'selesai'], true);
+        $mobilSekarangBebas = in_array($statusBaru, ['batal', 'selesai'], true);
+
+        if ($mobilDuluBebas !== $mobilSekarangBebas) {
+            $this->mobilRepository->update($transaksi->mobil_id, [
+                'status' => $mobilSekarangBebas ? 'tersedia' : 'disewa',
+            ]);
+        }
+    }
+
+    protected function cekTumpangTindih(array $data, int $kecualiTransaksiId = null): void
+    {
+        if ($this->repository->adaTabrakanTanggal(
+            (int) $data['mobil_id'],
+            $data['tanggal_mulai'],
+            $data['tanggal_selesai'],
+            $kecualiTransaksiId
+        )) {
+            throw new \DomainException('Mobil sudah dibooking pada rentang tanggal tersebut. Silakan pilih tanggal atau mobil lain.');
+        }
+    }
+
+    protected function hitungTotal(array $data): float
+    {
+        $mobil = $this->mobilRepository->find((int) $data['mobil_id']);
+
+        if (!$mobil) {
+            return (float) $data['total_harga'];
+        }
+
+        $mulai = Carbon::parse($data['tanggal_mulai']);
+        $selesai = Carbon::parse($data['tanggal_selesai']);
+        $jumlahHari = $mulai->diffInDays($selesai) + 1;
+
+        return (float) $mobil->harga_sewa * max(1, $jumlahHari);
     }
 
     public function terbaru(int $limit = 5)
@@ -139,6 +200,7 @@ class TransaksiService
             ['key' => 'total_harga', 'label' => 'Total', 'type' => 'currency'],
             ['key' => 'status_pembayaran', 'label' => 'Status', 'type' => 'badge', 'badgeMap' => [
                 ['value' => 'lunas', 'label' => 'Lunas', 'class' => 'bg-success'],
+                ['value' => 'selesai', 'label' => 'Selesai', 'class' => 'bg-info text-dark'],
                 ['value' => 'pending', 'label' => 'Pending', 'class' => 'bg-warning text-dark'],
                 ['value' => 'batal', 'label' => 'Batal', 'class' => 'bg-danger'],
             ]],

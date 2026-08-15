@@ -45,12 +45,27 @@ class TransaksiRepository extends EloquentRepository implements TransaksiReposit
         return $this->query()
             ->selectRaw("DATE_FORMAT(tanggal_pemesanan, '" . $dateFormat . "') as periode")
             ->selectRaw('SUM(total_harga) as total')
-            ->where('status_pembayaran', 'lunas')
+            ->whereIn('status_pembayaran', ['lunas', 'selesai'])
             ->where('tanggal_pemesanan', '>=', $since)
             ->groupBy('periode')
             ->orderBy('periode')
             ->pluck('total', 'periode')
             ->map(fn($total) => (float) $total)
             ->all();
+    }
+
+    public function adaTabrakanTanggal(int $mobilId, string $tanggalMulai, string $tanggalSelesai, int $kecualiTransaksiId = null): bool
+    {
+        $query = $this->query()
+            ->where('mobil_id', $mobilId)
+            ->whereIn('status_pembayaran', ['pending', 'lunas'])
+            ->where('tanggal_mulai', '<=', $tanggalSelesai)
+            ->where('tanggal_selesai', '>=', $tanggalMulai);
+
+        if ($kecualiTransaksiId) {
+            $query->where('id', '!=', $kecualiTransaksiId);
+        }
+
+        return $query->exists();
     }
 }

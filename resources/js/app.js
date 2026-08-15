@@ -3,13 +3,11 @@ import './bootstrap';
 import { createApp } from 'vue';
 import DashboardStats from './components/DashboardStats.vue';
 import DataTable from './components/DataTable.vue';
-import ExampleComponent from './components/ExampleComponent.vue';
 import RevenueChart from './components/RevenueChart.vue';
 
 const components = {
     DashboardStats,
     DataTable,
-    ExampleComponent,
     RevenueChart,
 };
 

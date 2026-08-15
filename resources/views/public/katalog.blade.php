@@ -38,7 +38,9 @@
                                             <img src="{{ asset('storage/' . $m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
                                                 class="car-image-img" loading="lazy" decoding="async">
                                         @else
-                                            <x-icon name="car" class="icon-car-placeholder" />
+                                            <img src="{{ asset('storage/hero/hero-fleet.png') }}"
+                                                alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
+                                                decoding="async">
                                         @endif
                                     </div>
                                     <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>

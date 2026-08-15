@@ -35,7 +35,8 @@
                                 </div>
                             @endif
                         @else
-                            <div class="detail-car"><x-icon name="car" class="icon-car-placeholder" /></div>
+                            <img src="{{ asset('storage/hero/hero-fleet.png') }}" alt="{{ $mobil->nama_mobil }}"
+                                class="detail-car-img" loading="lazy" decoding="async">
                         @endif
                     </div>
 
@@ -147,30 +148,34 @@
         const durasiText = document.getElementById('durasiText');
         const totalText = document.getElementById('totalText');
 
-        const fmt = (n) => 'Rp ' + new Intl.NumberFormat('id-ID').format(n);
+        if (mul && sel && durasiText && totalText) {
+            const fmt = (n) => 'Rp ' + new Intl.NumberFormat('id-ID').format(n);
 
-        function hitung() {
-            if (!mul.value || !sel.value) return;
-            const a = new Date(mul.value);
-            const b = new Date(sel.value);
-            if (b < a) {
-                sel.value = mul.value;
+            function hitung() {
+                if (!mul.value || !sel.value) return;
+                const a = new Date(mul.value);
+                const b = new Date(sel.value);
+                if (b < a) {
+                    sel.value = mul.value;
+                }
+                const days = Math.round((b - a) / 86400000) + 1;
+                durasiText.textContent = days + ' hari';
+                totalText.textContent = fmt(days * harga);
             }
-            const days = Math.round((b - a) / 86400000) + 1;
-            durasiText.textContent = days + ' hari';
-            totalText.textContent = fmt(days * harga);
-        }
 
-        mul.addEventListener('change', function () {
-            sel.min = mul.value;
-            if (!sel.value) sel.value = mul.value;
-            hitung();
-        });
-        sel.addEventListener('change', hitung);
+            mul.addEventListener('change', function () {
+                sel.min = mul.value;
+                if (!sel.value) sel.value = mul.value;
+                hitung();
+            });
+            sel.addEventListener('change', hitung);
+        }
 
         document.querySelectorAll('.detail-thumb-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
-                document.getElementById('gambarUtama').src = this.dataset.src;
+                const gambarUtama = document.getElementById('gambarUtama');
+                if (!gambarUtama) return;
+                gambarUtama.src = this.dataset.src;
                 document.querySelectorAll('.detail-thumb-btn').forEach(function (b) {
                     b.classList.remove('active');
                 });

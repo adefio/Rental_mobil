@@ -47,6 +47,10 @@ class PublicService
             throw new \DomainException('Mobil sedang tidak tersedia untuk disewa.');
         }
 
+        if ($this->transaksiRepository->adaTabrakanTanggal($mobil->id, $data['tanggal_mulai'], $data['tanggal_selesai'])) {
+            throw new \DomainException('Mobil sudah dibooking pada rentang tanggal tersebut. Silakan pilih tanggal atau mobil lain.');
+        }
+
         $pengguna = $this->penggunaRepository->findByUserId($user->id);
 
         if (!$pengguna) {
@@ -110,6 +114,25 @@ class PublicService
 
         $this->mobilRepository->update($transaksi->mobil_id, ['status' => 'tersedia']);
         $this->transaksiRepository->update($transaksiId, ['status_pembayaran' => 'batal']);
+
+        return true;
+    }
+
+    public function konfirmasiPembayaran(int $transaksiId, string $buktiPath, User $user): bool
+    {
+        $pengguna = $this->penggunaRepository->findByUserId($user->id);
+
+        if (!$pengguna) {
+            return false;
+        }
+
+        $transaksi = $this->transaksiRepository->findOrFail($transaksiId);
+
+        if ($transaksi->pengguna_id !== $pengguna->id || $transaksi->status_pembayaran !== 'pending') {
+            return false;
+        }
+
+        $this->transaksiRepository->update($transaksiId, ['bukti_pembayaran' => $buktiPath]);
 
         return true;
     }
