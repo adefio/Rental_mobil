@@ -1,5 +1,5 @@
 {
-    "buildCommand": "mkdir -p dist && echo ok > dist/index.html",
+    "buildCommand": "mkdir -p dist && echo ok > dist/index.html && (composer dump-autoload -o || true) && (php artisan route:cache || true)",
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.7.4",
@@ -17,7 +17,7 @@
         "APP_ENV": "production",
         "APP_DEBUG": "false",
         "CACHE_DRIVER": "array",
-        "SESSION_DRIVER": "database",
+        "SESSION_DRIVER": "cookie",
         "SESSION_SECURE_COOKIE": "true",
         "QUEUE_CONNECTION": "sync",
         "BROADCAST_DRIVER": "log",
