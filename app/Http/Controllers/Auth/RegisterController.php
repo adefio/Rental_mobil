@@ -2,92 +2,65 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\SupabaseAuthException;
 use App\Http\Controllers\Controller;
-use App\Models\Pengguna;
-use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
+use App\Services\SupabaseAuthService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Redirect based on role after registration.
-     *
-     * @return string
-     */
-    protected function redirectTo()
-    {
-        return auth()->user() && auth()->user()->isAdmin() ? '/home' : '/';
-    }
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(protected SupabaseAuthService $supabase)
     {
         $this->middleware('guest');
+        $this->middleware('throttle:10,1')->only('register');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $data = $this->validator($request->all())->validate();
+
+        try {
+            $session = $this->supabase->signUp($data['email'], $data['password'], [
+                'nama' => $data['name'],
+            ]);
+        } catch (SupabaseAuthException $e) {
+            return back()
+                ->withErrors(['email' => $e->getMessage()])
+                ->withInput($request->only('name', 'email'));
+        }
+
+        if (! empty($session['access_token']) && ! empty($session['user']['id'])) {
+            $user = Auth::guard('supabase')->loginFromSupabase($session);
+
+            if ($user) {
+                $request->session()->regenerate();
+
+                return redirect($this->redirectTo());
+            }
+        }
+
+        return redirect()->route('login')
+            ->with('status', 'Pendaftaran berhasil! Silakan cek email Anda untuk konfirmasi, lalu masuk.');
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
+    protected function redirectTo()
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        Pengguna::create([
-            'user_id' => $user->id,
-            'nama' => $data['name'],
-            'email' => $data['email'],
-            'password' => $user->password,
-            'role' => 'pelanggan',
-        ]);
-
-        return $user;
+        return '/';
     }
 }

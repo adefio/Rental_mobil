@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\SupabaseAuthException;
 use App\Services\ImageService;
 use App\Services\MobilService;
 use App\Services\PengembalianService;
 use App\Services\PenggunaService;
 use App\Services\SettingsService;
+use App\Services\SupabaseAuthService;
 use App\Services\TransaksiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
@@ -18,7 +19,8 @@ class HomeController extends Controller
         protected MobilService $mobilService,
         protected PenggunaService $penggunaService,
         protected TransaksiService $transaksiService,
-        protected PengembalianService $pengembalianService
+        protected PengembalianService $pengembalianService,
+        protected SupabaseAuthService $supabaseAuth
     ) {
         $this->middleware('auth');
     }
@@ -123,10 +125,24 @@ class HomeController extends Controller
             'foto_profil.dimensions' => 'Foto terlalu kecil. Minimal resolusi 400x400 piksel agar tidak pecah saat diperbesar.',
         ]);
 
+        $oldEmail = $user->email;
+
         $user->update([
             'name' => $data['nama'],
             'email' => $data['email'],
         ]);
+
+        if (strtolower($data['email']) !== strtolower($oldEmail)) {
+            $token = session(\App\Auth\SupabaseGuard::ACCESS_TOKEN_KEY);
+
+            if ($token) {
+                try {
+                    $this->supabaseAuth->updateUser($token, ['email' => $data['email']]);
+                } catch (SupabaseAuthException $e) {
+                    return back()->with('error', 'Gagal memperbarui email di Supabase: '.$e->getMessage());
+                }
+            }
+        }
 
         $penggunaData = [
             'nama' => $data['nama'],
@@ -146,8 +162,15 @@ class HomeController extends Controller
         }
 
         if (! empty($data['password'])) {
-            $user->update(['password' => Hash::make($data['password'])]);
-            $penggunaData['password'] = $user->fresh()->password;
+            $token = session(\App\Auth\SupabaseGuard::ACCESS_TOKEN_KEY);
+
+            if ($token) {
+                try {
+                    $this->supabaseAuth->updatePassword($token, $data['password']);
+                } catch (SupabaseAuthException $e) {
+                    return back()->with('error', 'Gagal mengubah password: '.$e->getMessage());
+                }
+            }
         }
 
         $user->pengguna()->updateOrCreate(['user_id' => $user->id], $penggunaData);

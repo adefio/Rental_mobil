@@ -3,39 +3,47 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\VerifiesEmails;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Email Verification Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling email verification for any
-    | user that recently registered with the application. Emails may also
-    | be re-sent if the user didn't receive the original email message.
-    |
-    */
-
-    use VerifiesEmails;
-
-    /**
-     * Where to redirect users after verification.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('verify');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+
+    public function show(Request $request)
+    {
+        return $request->user()->hasVerifiedEmail()
+            ? redirect($this->redirectPath())
+            : view('auth.verify');
+    }
+
+    public function verify(Request $request, $id, $hash)
+    {
+        $user = User::find($id);
+
+        if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            if (! $user->hasVerifiedEmail()) {
+                $user->markEmailAsVerified();
+            }
+        }
+
+        return redirect($this->redirectPath())
+            ->with('status', 'Email Anda telah dikonfirmasi. Silakan masuk.');
+    }
+
+    public function resend(Request $request)
+    {
+        return redirect($this->redirectPath())
+            ->with('status', 'Konfirmasi email ditangani oleh Supabase. Periksa email Anda.');
+    }
+
+    protected function redirectPath()
+    {
+        return '/';
     }
 }

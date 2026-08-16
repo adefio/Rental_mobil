@@ -23,6 +23,8 @@
         "LOG_CHANNEL": "stderr",
         "LOG_DEPRECATIONS_CHANNEL": "null",
         "FILESYSTEM_DISK": "local",
-        "STORAGE_DISK": "supabase"
+        "STORAGE_DISK": "supabase",
+        "DB_CONNECTION": "pgsql",
+        "DB_SSLMODE": "require"
     }
 }

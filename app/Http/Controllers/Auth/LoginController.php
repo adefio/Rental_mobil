@@ -3,48 +3,73 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
+    use ThrottlesLogins;
 
     /**
      * Where to redirect users after login.
-     *
-     * @var string
      */
-    protected $redirectTo = '/home';
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
-    /**
-     * Redirect based on role after login.
-     *
-     * @return string
-     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            $this->username() => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        $credentials = $request->only($this->username(), 'password');
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $this->clearLoginAttempts($request);
+            $request->session()->regenerate();
+
+            return redirect()->intended($this->redirectTo());
+        }
+
+        $this->incrementLoginAttempts($request);
+
+        return back()
+            ->withErrors([$this->username() => 'Email atau password salah. Silakan coba lagi.'])
+            ->withInput($request->only($this->username()));
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
     protected function redirectTo()
     {
         return auth()->user() && auth()->user()->isAdmin() ? '/home' : '/';
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected function username(): string
     {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+        return 'email';
     }
 }

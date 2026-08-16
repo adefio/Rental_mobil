@@ -28,7 +28,7 @@ Route::get('/sewa-mobil/{id}', [PublicController::class, 'detail'])->name('mobil
 
 Route::get('/tentang-kami', [PublicController::class, 'tentang'])->name('tentang');
 Route::get('/kontak', [PublicController::class, 'kontak'])->name('kontak');
-Route::post('/kontak', [PublicController::class, 'kirimPesan'])->name('kontak.kirim');
+Route::post('/kontak', [PublicController::class, 'kirimPesan'])->name('kontak.kirim')->middleware('throttle:5,10');
 Route::get('/kebijakan-privasi', [PublicController::class, 'kebijakanPrivasi'])->name('kebijakan.privasi');
 Route::get('/syarat-ketentuan', [PublicController::class, 'syaratKetentuan'])->name('syarat.ketentuan');
 
@@ -42,6 +42,10 @@ Route::middleware(['auth', 'user'])->group(function () {
 });
 
 Auth::routes();
+
+Route::get('/password/reset/complete', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'showCompleteForm'])->name('password.reset.complete');
+Route::post('/password/reset/complete', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'complete'])->name('password.reset.complete.post');
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
     ->name('home')
