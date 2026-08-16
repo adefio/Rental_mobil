@@ -17,7 +17,7 @@
         "APP_ENV": "production",
         "APP_DEBUG": "false",
         "CACHE_DRIVER": "array",
-        "SESSION_DRIVER": "cookie",
+        "SESSION_DRIVER": "database",
         "SESSION_SECURE_COOKIE": "true",
         "QUEUE_CONNECTION": "sync",
         "BROADCAST_DRIVER": "log",

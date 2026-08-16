@@ -262,11 +262,8 @@ class SupabaseAuthService
         }
 
         try {
-            $algorithms = $key instanceof Key
-                ? [$key->getAlgorithm()]
-                : ['RS256', 'HS256'];
-
-            $decoded = JWT::decode($token, $key, $algorithms);
+            $headers = null;
+            $decoded = JWT::decode($token, $key, $headers);
 
             return (array) $decoded;
         } catch (ExpiredException $e) {
