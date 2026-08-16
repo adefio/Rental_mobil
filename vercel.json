@@ -15,7 +15,7 @@
     "env": {
         "APP_NAME": "Rental Mobil",
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "CACHE_DRIVER": "array",
         "SESSION_DRIVER": "cookie",
         "SESSION_SECURE_COOKIE": "true",
@@ -26,6 +26,10 @@
         "FILESYSTEM_DISK": "local",
         "STORAGE_DISK": "supabase",
         "DB_CONNECTION": "pgsql",
+        "DB_HOST": "aws-0-ap-northeast-2.pooler.supabase.com",
+        "DB_PORT": "5432",
+        "DB_DATABASE": "postgres",
+        "DB_USERNAME": "postgres.yieiodexjlvghufrsoku",
         "DB_SSLMODE": "require"
     }
 }
