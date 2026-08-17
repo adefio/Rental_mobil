@@ -71,7 +71,7 @@
         </div>
     </section>
 
-    <section class="armada-band">
+    <section class="armada-band" style="content-visibility: auto; contain-intrinsic-size: auto 500px;">
         <div class="container">
             <div class="text-center mb-4">
                 <span class="section-label">Armada Lengkap</span>
@@ -83,7 +83,7 @@
         </div>
     </section>
 
-    <section class="py-5">
+    <section class="py-5" style="content-visibility: auto; contain-intrinsic-size: auto 600px;">
         <div class="container">
             <div class="text-center mb-4">
                 <span class="section-label">Armada Kami</span>
@@ -128,7 +128,7 @@
         </div>
     </section>
 
-    <section class="py-5">
+    <section class="py-5" style="content-visibility: auto; contain-intrinsic-size: auto 600px;">
         <div class="container">
             <div class="text-center mb-4">
                 <span class="section-label">Armada Terbaru</span>
@@ -173,7 +173,7 @@
         </div>
     </section>
 
-    <section class="py-5 bg-light" id="cara-kerja">
+    <section class="py-5 bg-light" id="cara-kerja" style="content-visibility: auto; contain-intrinsic-size: auto 400px;">
         <div class="container">
             <div class="text-center mb-4">
                 <span class="section-label">Cara Kerja</span>

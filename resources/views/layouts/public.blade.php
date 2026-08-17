@@ -10,8 +10,10 @@
     <title>{{ settings('nama_aplikasi', config('app.name', 'Rental Mobil')) }} - @yield('title', 'Beranda')</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="preload" as="image" href="{{ gambar_url('hero/hero-fleet.png') }}" fetchpriority="high">
 
     @vite(['resources/sass/app.scss', 'resources/js/public.js'])
 </head>
@@ -99,7 +101,7 @@
                                 @endif
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="#"
-                                    onclick="event.preventDefault(); new bootstrap.Modal(document.getElementById('logoutModal')).show();">
+                                    data-bs-toggle="modal" data-bs-target="#logoutModal">
                                     Keluar
                                 </a>
                             </div>

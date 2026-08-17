@@ -1,5 +1,6 @@
-import * as bootstrap from 'bootstrap';
-window.bootstrap = bootstrap;
+import 'bootstrap/js/dist/collapse';
+import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/modal';
 
 document.querySelectorAll('.form-group').forEach((group) => {
     const err = group.querySelector(':scope > .text-danger');

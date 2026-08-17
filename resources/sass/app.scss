@@ -1352,10 +1352,12 @@ button:focus-visible,
     .hero-fleet-img {
         max-width: 100%;
         height: auto;
+        aspect-ratio: 3 / 2;
         border-radius: 20px;
         box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
         display: block;
         margin: 0 auto;
+        background: linear-gradient(135deg, #eef2ff, #f5f3ff);
     }
 }
 
@@ -1457,6 +1459,7 @@ button:focus-visible,
         object-fit: cover;
         border-radius: 12px;
         transition: transform 0.3s ease;
+        background: linear-gradient(135deg, #eef2ff, #f5f3ff);
     }
 
     .car-image-placeholder {
