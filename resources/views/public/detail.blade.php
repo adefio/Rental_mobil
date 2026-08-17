@@ -37,8 +37,7 @@
                                 </div>
                             @endif
                         @else
-                            <img src="{{ gambar_url('hero/hero-fleet.png') }}" alt="{{ $mobil->nama_mobil }}"
-                                class="detail-car-img" loading="lazy" decoding="async">
+                            <div class="car-image-placeholder car-image-placeholder-lg"><x-icon name="car" /></div>
                         @endif
                     </div>
 

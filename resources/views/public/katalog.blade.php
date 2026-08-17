@@ -39,9 +39,7 @@
                                             <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
                                                 class="car-image-img" width="400" height="160" loading="lazy" decoding="async">
                                         @else
-                                            <img src="{{ gambar_url('hero/hero-fleet.png') }}"
-                                                alt="{{ $m->nama_mobil }}" class="car-image-img" width="400" height="160" loading="lazy"
-                                                decoding="async">
+                                            <div class="car-image-placeholder"><x-icon name="car" /></div>
                                         @endif
                                     </div>
                                     <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>
