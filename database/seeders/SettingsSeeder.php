@@ -1,20 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace Database\Seeders;
 
-return new class extends Migration
+use App\Models\Setting;
+use Illuminate\Database\Seeder;
+
+class SettingsSeeder extends Seeder
 {
-    public function up(): void
+    public function run(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('key')->unique();
-            $table->text('value')->nullable();
-            $table->timestamps();
-        });
-
         $defaults = [
             'nama_aplikasi' => 'Rental Mobil',
             'slogan' => 'Layanan penyewaan mobil terpercaya dengan armada pilihan dan harga bersahabat.',
@@ -26,15 +20,10 @@ return new class extends Migration
         ];
 
         foreach ($defaults as $key => $value) {
-            \App\Models\Setting::create([
+            Setting::create([
                 'key' => $key,
                 'value' => $value,
             ]);
         }
     }
-
-    public function down(): void
-    {
-        Schema::dropIfExists('settings');
-    }
-};
+}

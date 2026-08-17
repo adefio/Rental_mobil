@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Mobil;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class MobilSeeder extends Seeder
 {
@@ -92,6 +92,8 @@ class MobilSeeder extends Seeder
             ],
         ];
 
-        DB::table('mobil')->insert($mobil);
+        foreach ($mobil as $item) {
+            Mobil::create($item);
+        }
     }
 }

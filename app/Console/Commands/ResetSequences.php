@@ -12,14 +12,14 @@ class ResetSequences extends Command
 
     public function handle(): int
     {
-        $tables = ['mobil', 'pengguna', 'transaksi', 'pengembalian', 'pesan', 'settings'];
+        $tables = ['users', 'mobil', 'pengguna', 'transaksi', 'pengembalian', 'pesan', 'settings'];
 
         foreach ($tables as $table) {
             $maxId = DB::table($table)->max('id') ?? 0;
             $sequence = $table . '_id_seq';
 
             try {
-                DB::statement("SELECT setval('{$sequence}', {$maxId})");
+                DB::statement("SELECT setval('{$sequence}', {$maxId}, false)");
                 $this->info("  {$table}: sequence diset ke {$maxId}");
             } catch (\Exception $e) {
                 $this->warn("  {$table}: sequence '{$sequence}' tidak ditemukan, skip.");

@@ -6,17 +6,12 @@ use App\Models\Pesan;
 use App\Models\Pengembalian;
 use App\Models\Pengguna;
 use App\Models\Transaksi;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->seedAkunDemo();
-
         if (Transaksi::count() === 0) {
             $this->seedTransaksiDemo();
         }
@@ -26,52 +21,13 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    protected function seedAkunDemo(): void
-    {
-        $adminUser = User::firstOrCreate(
-            ['email' => 'admin@rentalmobil.test'],
-            [
-                'name' => 'Admin Rental',
-                'password' => Hash::make('password123'),
-            ]
-        );
-
-        Pengguna::firstOrCreate(
-            ['user_id' => $adminUser->id],
-            [
-                'nama' => 'Admin Rental',
-                'email' => 'admin@rentalmobil.test',
-                'password' => $adminUser->password,
-                'role' => 'admin',
-                'no_telepon' => '+62 812-3456-7890',
-                'alamat' => 'Jl. Raya Rental No. 123, Jakarta',
-            ]
-        );
-
-        $pelangganUser = User::firstOrCreate(
-            ['email' => 'test@gmail.test'],
-            [
-                'name' => 'Test Pelanggan',
-                'password' => Hash::make('password123'),
-            ]
-        );
-
-        Pengguna::firstOrCreate(
-            ['user_id' => $pelangganUser->id],
-            [
-                'nama' => 'Test Pelanggan',
-                'email' => 'test@gmail.test',
-                'password' => $pelangganUser->password,
-                'role' => 'pelanggan',
-                'no_telepon' => '0812-3456-7891',
-                'alamat' => 'Jl. Melati No. 45, Jakarta Selatan',
-            ]
-        );
-    }
-
     protected function seedTransaksiDemo(): void
     {
         $pelangganId = Pengguna::where('role', 'pelanggan')->value('id');
+
+        if (!$pelangganId) {
+            return;
+        }
 
         $data = [
             // Selesai (kembali), tersebar agar grafik pendapatan terisi
