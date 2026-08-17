@@ -1,8 +1,36 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
+// Bootstrap - only needed modules (reduce unused CSS)
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/breadcrumb';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/spinners';
+@import 'bootstrap/scss/helpers';
 
 // ============ Design tokens ============
 :root {
@@ -1519,7 +1547,7 @@ button:focus-visible,
     .car-price-unit {
         font-size: 0.78rem;
         font-weight: 600;
-        color: #94a3b8;
+        color: #64748b;
     }
 }
 
@@ -1566,7 +1594,7 @@ button:focus-visible,
         }
     }
 
-    h5 {
+    h3 {
         font-weight: 800;
         color: var(--ink);
     }
@@ -1812,7 +1840,7 @@ button:focus-visible,
         }
 
         a {
-            color: #94a3b8;
+            color: #b0c4d8;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.15s ease;

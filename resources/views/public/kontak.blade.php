@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Kontak')
+@section('meta_description', 'Hubungi kami untuk informasi sewa mobil. Telepon, WhatsApp, email, atau kunjungi lokasi kami.')
 
 @section('content')
     <section class="page-header">
@@ -54,7 +55,7 @@
                 <div class="col-lg-6">
                     <div class="booking-card card shadow-sm p-0">
                         <div class="card-header bg-transparent border-0">
-                            <h5 class="fw-bold mb-0">Lokasi Kami</h5>
+                            <h2 class="fw-bold mb-0">Lokasi Kami</h2>
                         </div>
                         <div class="card-body">
                             <p class="text-muted mb-2 d-flex align-items-center gap-2">
@@ -81,7 +82,7 @@
                 <div class="col-lg-6">
                     <div class="booking-card card shadow-sm p-0">
                         <div class="card-header bg-transparent border-0">
-                            <h5 class="fw-bold mb-0">Kirim Pesan</h5>
+                            <h2 class="fw-bold mb-0">Kirim Pesan</h2>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('kontak.kirim') }}">

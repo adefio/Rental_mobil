@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Pesanan Saya')
+@section('meta_description', 'Kelola pemesanan mobil Anda. Lihat status, unggah bukti pembayaran, dan kelola pesanan.')
 
 @section('content')
     <section class="page-header">
@@ -21,7 +22,7 @@
                                     <div class="d-flex justify-content-between align-items-start mb-3">
                                         <div>
                                             <small class="text-muted">No. Pesanan</small>
-                                            <h5 class="fw-bold mb-0">#{{ str_pad($t->id, 4, '0', STR_PAD_LEFT) }}</h5>
+                                            <h2 class="fw-bold mb-0">#{{ str_pad($t->id, 4, '0', STR_PAD_LEFT) }}</h2>
                                         </div>
                                         <span class="badge rounded-pill
                                             {{ $t->status_pembayaran == 'lunas' ? 'bg-success' : ($t->status_pembayaran == 'selesai' ? 'bg-info text-dark' : ($t->status_pembayaran == 'pending' ? 'bg-warning text-dark' : 'bg-danger')) }}">

@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Pengaturan Akun')
+@section('meta_description', 'Kelola pengaturan akun rental mobil Anda.')
 
 @section('content')
     <section class="page-header">

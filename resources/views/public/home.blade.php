@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Beranda')
+@section('meta_description', 'Sewa mobil mudah, aman, dan terpercaya. Pilih armada terbaik dengan harga transparan dan proses pemesanan cepat.')
 
 @section('content')
     <section class="public-hero">
@@ -40,8 +41,8 @@
                     <div class="hero-visual">
                         <div class="hero-car">
                             <img src="{{ gambar_url('hero/hero-fleet.png') }}"
-                                alt="Barisan unit mobil rental" class="hero-fleet-img" loading="lazy"
-                                decoding="async">
+                                alt="Barisan unit mobil rental" class="hero-fleet-img"
+                                width="600" height="400" fetchpriority="high" decoding="async">
                         </div>
                         <div class="hero-card hero-card-1">
                             <div class="hero-card-icon"><x-icon name="check-circle" /></div>
@@ -78,7 +79,7 @@
                 <p class="text-muted mb-0">Seluruh unit dalam satu barisan, siap melayani perjalanan Anda.</p>
             </div>
             <img src="{{ gambar_url('hero/armada-banner.png') }}" alt="Barisan unit mobil rental"
-                class="armada-banner-img" loading="lazy" decoding="async">
+                class="armada-banner-img" width="1200" height="400" loading="lazy" decoding="async">
         </div>
     </section>
 
@@ -99,17 +100,17 @@
                                     <div class="car-image">
                                         @if (!empty($m->gambar) && isset($m->gambar[0]))
                                             <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
-                                                class="car-image-img" loading="lazy" decoding="async">
+                                                class="car-image-img" width="400" height="160" loading="lazy" decoding="async">
                                         @else
                                             <img src="{{ gambar_url('hero/hero-fleet.png') }}"
-                                                alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
+                                                alt="{{ $m->nama_mobil }}" class="car-image-img" width="400" height="160" loading="lazy"
                                                 decoding="async">
                                         @endif
                                     </div>
                                     <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>
                                 </div>
                                 <div class="car-card-body d-flex flex-column flex-grow-1">
-                                    <h5 class="car-name">{{ $m->nama_mobil }}</h5>
+                                    <h3 class="car-name">{{ $m->nama_mobil }}</h3>
                                     <div class="car-meta flex-grow-1">
                                         <span>{{ $m->merk }}</span>
                                         <span>{{ $m->tahun }}</span>
@@ -146,17 +147,17 @@
                                     <div class="car-image">
                                         @if (!empty($m->gambar) && isset($m->gambar[0]))
                                             <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
-                                                class="car-image-img" loading="lazy" decoding="async">
+                                                class="car-image-img" width="400" height="160" loading="lazy" decoding="async">
                                         @else
                                             <img src="{{ gambar_url('hero/hero-fleet.png') }}"
-                                                alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
+                                                alt="{{ $m->nama_mobil }}" class="car-image-img" width="400" height="160" loading="lazy"
                                                 decoding="async">
                                         @endif
                                     </div>
                                     <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>
                                 </div>
                                 <div class="car-card-body d-flex flex-column flex-grow-1">
-                                    <h5 class="car-name">{{ $m->nama_mobil }}</h5>
+                                    <h3 class="car-name">{{ $m->nama_mobil }}</h3>
                                     <div class="car-meta flex-grow-1">
                                         <span>{{ $m->merk }}</span>
                                         <span>{{ $m->tahun }}</span>
@@ -188,7 +189,7 @@
                     <div class="step-card text-center">
                         <div class="step-number">1</div>
                         <div class="step-icon"><x-icon name="search" /></div>
-                        <h5>Pilih Mobil</h5>
+                        <h3>Pilih Mobil</h3>
                         <p class="text-muted small">Jelajahi katalog dan pilih mobil yang sesuai kebutuhan Anda.</p>
                     </div>
                 </div>
@@ -196,7 +197,7 @@
                     <div class="step-card text-center">
                         <div class="step-number">2</div>
                         <div class="step-icon"><x-icon name="calendar" /></div>
-                        <h5>Tentukan Jadwal</h5>
+                        <h3>Tentukan Jadwal</h3>
                         <p class="text-muted small">Pilih tanggal mulai dan selesai peminjaman.</p>
                     </div>
                 </div>
@@ -204,7 +205,7 @@
                     <div class="step-card text-center">
                         <div class="step-number">3</div>
                         <div class="step-icon"><x-icon name="key" /></div>
-                        <h5>Ambil Mobil</h5>
+                        <h3>Ambil Mobil</h3>
                         <p class="text-muted small">Bayar di tempat dan kunci mobil siap diambil.</p>
                     </div>
                 </div>

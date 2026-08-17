@@ -1,0 +1,1 @@
+import{b as r}from"./bootstrap.esm-e074f7ea.js";window.bootstrap=r;document.querySelectorAll(".form-group").forEach(t=>{const e=t.querySelector(":scope > .text-danger");if(e&&e.textContent.trim()){const o=t.querySelector("input, select, textarea");o&&o.classList.add("is-invalid")}});

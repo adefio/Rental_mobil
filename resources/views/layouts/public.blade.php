@@ -4,15 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="@yield('meta_description', 'Sewa mobil mudah, aman, dan terpercaya. Pilih armada terbaik dengan harga transparan dan proses cepat.')">
 
     <title>{{ settings('nama_aplikasi', config('app.name', 'Rental Mobil')) }} - @yield('title', 'Beranda')</title>
 
-    <link rel="preconnect" href="//fonts.bunny.net" crossorigin>
-    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/public.js'])
 </head>
 
 <body class="public-page">
@@ -196,7 +197,7 @@
             </div>
             <hr class="border-secondary">
             <div class="footer-bottom">
-                <span class="small text-white-50">&copy; {{ date('Y') }} RentalMobil. Hak cipta dilindungi.</span>
+                <span class="small text-white-50">&copy; {{ date('Y') }} {{ settings('nama_aplikasi', 'RentalMobil') }}. Hak cipta dilindungi.</span>
                 <span class="footer-bottom-links small">
                     <a href="{{ url('kebijakan-privasi') }}" class="text-white-50">Kebijakan Privasi</a>
                     <a href="{{ url('syarat-ketentuan') }}" class="text-white-50">Syarat &amp; Ketentuan</a>

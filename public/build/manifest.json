@@ -1,11 +1,25 @@
 {
+  "_bootstrap.esm-e074f7ea.js": {
+    "file": "assets/bootstrap.esm-e074f7ea.js"
+  },
   "resources/js/app.js": {
-    "file": "assets/app-4c398f4f.js",
+    "file": "assets/app-b2dab143.js",
+    "imports": [
+      "_bootstrap.esm-e074f7ea.js"
+    ],
     "isEntry": true,
     "src": "resources/js/app.js"
   },
+  "resources/js/public.js": {
+    "file": "assets/public-dcea9776.js",
+    "imports": [
+      "_bootstrap.esm-e074f7ea.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/public.js"
+  },
   "resources/sass/app.scss": {
-    "file": "assets/app-334f8170.css",
+    "file": "assets/app-ba7a0f32.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   }

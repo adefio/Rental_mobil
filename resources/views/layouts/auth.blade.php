@@ -9,10 +9,11 @@
 
     <title>{{ config('app.name', 'Rental Mobil') }} - @yield('title', 'Akun')</title>
 
-    <link rel="preconnect" href="//fonts.bunny.net" crossorigin>
-    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/public.js'])
 </head>
 
 <body class="auth-page">

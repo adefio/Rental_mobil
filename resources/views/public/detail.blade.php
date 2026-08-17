@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', $mobil->nama_mobil)
+@section('meta_description', 'Sewa {{ $mobil->nama_mobil }} - {{ $mobil->merk }} {{ $mobil->tahun }}. Harga Rp ' . number_format($mobil->harga_sewa, 0, ',', '.') . '/hari.')
 
 @section('content')
     <section class="page-header">
@@ -23,7 +24,8 @@
                     <div class="car-detail-visual mb-4">
                         @if (!empty($mobil->gambar))
                             <img id="gambarUtama" src="{{ gambar_url($mobil->gambar[0]) }}"
-                                alt="{{ $mobil->nama_mobil }}" class="detail-car-img" fetchpriority="high">
+                                alt="{{ $mobil->nama_mobil }}" class="detail-car-img"
+                                width="700" height="440" fetchpriority="high" decoding="async">
                             @if (count($mobil->gambar) > 1)
                                 <div class="detail-gallery d-flex gap-2 mt-3 flex-wrap justify-content-center">
                                     @foreach ($mobil->gambar as $i => $path)
@@ -40,7 +42,7 @@
                         @endif
                     </div>
 
-                    <h3 class="fw-bold mb-3">Deskripsi</h3>
+                    <h2 class="fw-bold mb-3">Deskripsi</h2>
                     <p class="text-muted">{{ $mobil->deskripsi ?: 'Belum ada deskripsi untuk mobil ini.' }}</p>
 
                     <div class="row g-3 mt-2">
@@ -80,7 +82,7 @@
                 <div class="col-lg-5">
                     <div class="card booking-card shadow-sm">
                         <div class="card-body p-4">
-                            <h4 class="fw-bold mb-1">Pesan Mobil Ini</h4>
+                            <h2 class="fw-bold mb-1">Pesan Mobil Ini</h2>
                             <div class="booking-price mb-3">
                                 Rp {{ number_format($mobil->harga_sewa, 0, ',', '.') }}
                                 <small class="text-muted">/hari</small>

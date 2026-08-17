@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Sewa Mobil')
+@section('meta_description', 'Jelajahi armada mobil rental kami. Pilih mobil sesuai kebutuhan perjalanan Anda dengan harga terbaik.')
 
 @section('content')
     <section class="page-header">
@@ -36,17 +37,17 @@
                                     <div class="car-image">
                                         @if (!empty($m->gambar) && isset($m->gambar[0]))
                                             <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
-                                                class="car-image-img" loading="lazy" decoding="async">
+                                                class="car-image-img" width="400" height="160" loading="lazy" decoding="async">
                                         @else
                                             <img src="{{ gambar_url('hero/hero-fleet.png') }}"
-                                                alt="{{ $m->nama_mobil }}" class="car-image-img" loading="lazy"
+                                                alt="{{ $m->nama_mobil }}" class="car-image-img" width="400" height="160" loading="lazy"
                                                 decoding="async">
                                         @endif
                                     </div>
                                     <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>
                                 </div>
                                 <div class="car-card-body d-flex flex-column">
-                                    <h5 class="car-name">{{ $m->nama_mobil }}</h5>
+                                    <h2 class="car-name">{{ $m->nama_mobil }}</h2>
                                     <div class="car-meta">
                                         <span>{{ $m->merk }}</span>
                                         <span>{{ $m->tahun }}</span>

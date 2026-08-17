@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Tentang Kami')
+@section('meta_description', 'Kenali lebih dekat layanan penyewaan mobil kami. Armada terawat, harga transparan, dan layanan profesional.')
 
 @section('content')
     <section class="page-header">
@@ -112,7 +113,7 @@
                 <div class="col-lg-6">
                     <div class="step-card h-100">
                         <div class="step-icon"><x-icon name="target" /></div>
-                        <h5 class="fw-bold">Visi Kami</h5>
+                        <h3 class="fw-bold">Visi Kami</h3>
                         <p class="text-muted">
                             Menjadi penyedia layanan penyewaan mobil terdepan yang memberikan
                             solusi mobilitas mudah, nyaman, dan terjangkau bagi semua orang.
@@ -122,7 +123,7 @@
                 <div class="col-lg-6">
                     <div class="step-card h-100">
                         <div class="step-icon"><x-icon name="route" /></div>
-                        <h5 class="fw-bold">Misi Kami</h5>
+                        <h3 class="fw-bold">Misi Kami</h3>
                         <ul class="text-muted mb-0 ps-3">
                             <li class="mb-1">Menyediakan armada berkualitas dan terawat.</li>
                             <li class="mb-1">Memberikan pelayanan ramah dan profesional.</li>
