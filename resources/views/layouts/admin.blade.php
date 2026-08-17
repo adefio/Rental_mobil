@@ -109,7 +109,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('pengaturan*') ? 'active' : '' }}" href="{{ url('pengaturan') }}">
-                            <i class="nav-icon"><x-icon name="settings" /></i> Pengaturan Aplikasi
+                            <i class="nav-icon"><x-icon name="settings" /></i> Pengaturan
                         </a>
                     </li>
                 </ul>

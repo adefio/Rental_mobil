@@ -1,16 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Pengaturan Aplikasi')
+@section('title', 'Pengaturan')
 
 @section('content')
-    <div class="admin-page-header d-flex flex-wrap align-items-end justify-content-between gap-3">
-        <div>
-            <h1 class="admin-page-title mb-1">Pengaturan Aplikasi</h1>
-            <p class="admin-page-sub mb-0">Atur identitas bisnis dan informasi operasional yang tampil di aplikasi.</p>
-        </div>
-        <a href="{{ url('home') }}" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
-            <x-icon name="arrow-left" class="icon-sm" /> Kembali ke Dashboard
-        </a>
+    <div class="admin-page-header mb-4">
+        <h1 class="admin-page-title mb-1">Pengaturan</h1>
+        <p class="admin-page-sub mb-0">Atur identitas bisnis dan informasi operasional yang tampil di aplikasi.</p>
     </div>
 
     <form method="POST" action="{{ route('admin.pengaturan.update') }}" id="formPengaturan">
