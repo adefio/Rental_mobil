@@ -60,7 +60,7 @@ trait SequentialId
     {
         try {
             $tableName = $this->getTable();
-            $sequence = $tableName . '_id_seq';
+            $sequence = $tableName.'_id_seq';
             $maxId = DB::table($tableName)->max('id') ?? 0;
 
             DB::statement("SELECT setval('{$sequence}', {$maxId})");

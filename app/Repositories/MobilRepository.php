@@ -40,7 +40,7 @@ class MobilRepository extends EloquentRepository implements MobilRepositoryInter
             ->get();
     }
 
-    public function tersedia(int $limit = null): \Illuminate\Support\Collection
+    public function tersedia(?int $limit = null): \Illuminate\Support\Collection
     {
         $query = $this->query()->where('status', 'tersedia');
 
@@ -60,7 +60,7 @@ class MobilRepository extends EloquentRepository implements MobilRepositoryInter
             ->get();
     }
 
-    public function katalog(string $search = null): \Illuminate\Support\Collection
+    public function katalog(?string $search = null): \Illuminate\Support\Collection
     {
         return $this->query()
             ->where('status', '!=', 'maintenance')

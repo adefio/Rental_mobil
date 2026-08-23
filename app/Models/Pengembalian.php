@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\SequentialId;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-use App\Traits\SequentialId;
 
 class Pengembalian extends Model
 {
     use HasFactory, SequentialId;
+
     protected $table = 'pengembalian';
 
     protected $fillable = [
@@ -28,9 +29,9 @@ class Pengembalian extends Model
 
     /**
      * Fungsi untuk menghitung denda keterlambatan.
-     * 
-     * @param string $tanggal_seharusnya_kembali
-     * @param string $tanggal_pengembalian
+     *
+     * @param  string  $tanggal_seharusnya_kembali
+     * @param  string  $tanggal_pengembalian
      * @return float
      */
     public function hitungDendaTelat($tanggal_seharusnya_kembali, $tanggal_pengembalian)
@@ -44,6 +45,7 @@ class Pengembalian extends Model
         // Jika tanggal pengembalian lebih dari tanggal seharusnya kembali, hitung denda
         if ($tanggal_pengembalian->gt($tanggal_seharusnya_kembali)) {
             $selisih_hari = $tanggal_seharusnya_kembali->diffInDays($tanggal_pengembalian);
+
             return $selisih_hari * $tarif_denda_per_hari;
         }
 
@@ -52,7 +54,7 @@ class Pengembalian extends Model
 
     /**
      * Fungsi untuk menghitung total denda (denda keterlambatan + biaya kerusakan)
-     * 
+     *
      * @return float
      */
     public function hitungTotalDenda()

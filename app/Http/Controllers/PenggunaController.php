@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class PenggunaController extends Controller
 {
-    public function __construct(protected PenggunaService $service)
-    {
-    }
+    public function __construct(protected PenggunaService $service) {}
 
     public function index()
     {
@@ -61,7 +59,7 @@ class PenggunaController extends Controller
 
         $data = $request->validate([
             'nama' => 'required|string',
-            'email' => 'required|email|unique:pengguna,email,' . $id,
+            'email' => 'required|email|unique:pengguna,email,'.$id,
             'no_telepon' => 'nullable|string',
             'alamat' => 'nullable|string',
         ]);

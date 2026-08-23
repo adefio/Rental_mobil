@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pesan;
 use App\Models\Pengembalian;
 use App\Models\Pengguna;
+use App\Models\Pesan;
 use App\Models\Transaksi;
 use Illuminate\Database\Seeder;
 
@@ -25,7 +25,7 @@ class DemoDataSeeder extends Seeder
     {
         $pelangganId = Pengguna::where('role', 'pelanggan')->value('id');
 
-        if (!$pelangganId) {
+        if (! $pelangganId) {
             return;
         }
 
@@ -68,7 +68,7 @@ class DemoDataSeeder extends Seeder
 
             $mobil = \App\Models\Mobil::find($item['mobil']);
 
-            if (!$mobil) {
+            if (! $mobil) {
                 continue;
             }
 

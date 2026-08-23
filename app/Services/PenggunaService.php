@@ -7,9 +7,7 @@ use Illuminate\Support\Collection;
 
 class PenggunaService
 {
-    public function __construct(protected PenggunaRepositoryInterface $repository)
-    {
-    }
+    public function __construct(protected PenggunaRepositoryInterface $repository) {}
 
     public function paginatedData(): array
     {

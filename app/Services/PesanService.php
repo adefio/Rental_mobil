@@ -6,9 +6,7 @@ use App\Contracts\Repositories\PesanRepositoryInterface;
 
 class PesanService
 {
-    public function __construct(protected PesanRepositoryInterface $repository)
-    {
-    }
+    public function __construct(protected PesanRepositoryInterface $repository) {}
 
     public function paginatedData(): array
     {

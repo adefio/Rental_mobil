@@ -12,5 +12,5 @@ interface TransaksiRepositoryInterface extends RepositoryInterface
 
     public function pendapatanLunasGrouped(string $since, string $dateFormat): array;
 
-    public function adaTabrakanTanggal(int $mobilId, string $tanggalMulai, string $tanggalSelesai, int $kecualiTransaksiId = null): bool;
+    public function adaTabrakanTanggal(int $mobilId, string $tanggalMulai, string $tanggalSelesai, ?int $kecualiTransaksiId = null): bool;
 }

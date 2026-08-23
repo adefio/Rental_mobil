@@ -19,8 +19,9 @@ class WipeAndSeed extends Command
         $this->newLine();
 
         $this->warn('PERINGATAN: Semua data akan dihapus permanen!');
-        if (!$this->option('force') && !$this->confirm('Lanjutkan?', false)) {
+        if (! $this->option('force') && ! $this->confirm('Lanjutkan?', false)) {
             $this->info('Dibatalkan.');
+
             return self::SUCCESS;
         }
 
@@ -31,6 +32,7 @@ class WipeAndSeed extends Command
         $this->newLine();
         $this->info('=== SELESAI ===');
         $this->info('Semua tabel sudah kosong, sequence direset ke 1, dan data seed sudah dimasukkan ulang.');
+
         return self::SUCCESS;
     }
 
@@ -70,6 +72,7 @@ class WipeAndSeed extends Command
 
                 if (empty($exists)) {
                     $this->warn("   {$sequence}: tidak ditemukan, skip.");
+
                     continue;
                 }
 

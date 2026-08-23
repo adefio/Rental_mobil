@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    public function __construct(protected TransaksiService $service)
-    {
-    }
+    public function __construct(protected TransaksiService $service) {}
 
     public function index()
     {

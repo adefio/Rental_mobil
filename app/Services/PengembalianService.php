@@ -13,8 +13,7 @@ class PengembalianService
         protected PengembalianRepositoryInterface $repository,
         protected TransaksiRepositoryInterface $transaksiRepository,
         protected MobilRepositoryInterface $mobilRepository
-    ) {
-    }
+    ) {}
 
     public function paginatedData(): array
     {
@@ -104,12 +103,12 @@ class PengembalianService
 
     protected function resolveDenda(array $data): array
     {
-        if (!empty($data['denda_telat'])) {
+        if (! empty($data['denda_telat'])) {
             return $data;
         }
 
         $transaksi = $this->transaksiRepository->findOrFail($data['transaksi_id']);
-        $data['denda_telat'] = (new \App\Models\Pengembalian())
+        $data['denda_telat'] = (new \App\Models\Pengembalian)
             ->hitungDendaTelat($transaksi->tanggal_selesai, $data['tanggal_pengembalian']);
 
         return $data;

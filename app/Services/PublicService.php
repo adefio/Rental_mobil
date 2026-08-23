@@ -15,8 +15,7 @@ class PublicService
         protected MobilRepositoryInterface $mobilRepository,
         protected TransaksiRepositoryInterface $transaksiRepository,
         protected PenggunaRepositoryInterface $penggunaRepository
-    ) {
-    }
+    ) {}
 
     public function homeData(): array
     {
@@ -34,7 +33,7 @@ class PublicService
         ];
     }
 
-    public function katalog(string $search = null): Collection
+    public function katalog(?string $search = null): Collection
     {
         return $this->mobilRepository->katalog($search);
     }
@@ -58,7 +57,7 @@ class PublicService
 
         $pengguna = $this->penggunaRepository->findByUserId($user->id);
 
-        if (!$pengguna) {
+        if (! $pengguna) {
             $pengguna = $this->penggunaRepository->create([
                 'user_id' => $user->id,
                 'nama' => $user->name,
@@ -92,7 +91,7 @@ class PublicService
     {
         $pengguna = $this->penggunaRepository->findByUserId($user->id);
 
-        if (!$pengguna) {
+        if (! $pengguna) {
             return collect();
         }
 
@@ -103,7 +102,7 @@ class PublicService
     {
         $pengguna = $this->penggunaRepository->findByUserId($user->id);
 
-        if (!$pengguna) {
+        if (! $pengguna) {
             return false;
         }
 
@@ -127,7 +126,7 @@ class PublicService
     {
         $pengguna = $this->penggunaRepository->findByUserId($user->id);
 
-        if (!$pengguna) {
+        if (! $pengguna) {
             return false;
         }
 

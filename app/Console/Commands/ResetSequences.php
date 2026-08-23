@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class ResetSequences extends Command
 {
     protected $signature = 'db:reset-sequences';
+
     protected $description = 'Reset semua PostgreSQL sequence agar sinkron dengan max(id) aktual di setiap tabel';
 
     public function handle(): int
@@ -16,7 +17,7 @@ class ResetSequences extends Command
 
         foreach ($tables as $table) {
             $maxId = DB::table($table)->max('id') ?? 0;
-            $sequence = $table . '_id_seq';
+            $sequence = $table.'_id_seq';
 
             try {
                 DB::statement("SELECT setval('{$sequence}', {$maxId}, false)");
@@ -27,6 +28,7 @@ class ResetSequences extends Command
         }
 
         $this->info('Semua sequence berhasil disinkronkan.');
+
         return self::SUCCESS;
     }
 }

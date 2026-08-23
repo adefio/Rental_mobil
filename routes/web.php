@@ -46,7 +46,6 @@ Auth::routes();
 Route::get('/password/reset/complete', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'showCompleteForm'])->name('password.reset.complete');
 Route::post('/password/reset/complete', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'complete'])->name('password.reset.complete.post');
 
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
     ->name('home')
     ->middleware(['auth', 'admin']);

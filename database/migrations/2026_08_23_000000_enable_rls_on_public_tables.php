@@ -8,7 +8,7 @@ return new class extends Migration
     public function up(): void
     {
         $tables = DB::select(
-            "select tablename from pg_tables where schemaname = ? and rowsecurity = false",
+            'select tablename from pg_tables where schemaname = ? and rowsecurity = false',
             [$this->getSchema()]
         );
 

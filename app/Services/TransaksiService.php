@@ -14,8 +14,7 @@ class TransaksiService
         protected TransaksiRepositoryInterface $repository,
         protected PenggunaRepositoryInterface $penggunaRepository,
         protected MobilRepositoryInterface $mobilRepository
-    ) {
-    }
+    ) {}
 
     public function paginatedData(): array
     {
@@ -165,7 +164,7 @@ class TransaksiService
         }
     }
 
-    protected function cekTumpangTindih(array $data, int $kecualiTransaksiId = null): void
+    protected function cekTumpangTindih(array $data, ?int $kecualiTransaksiId = null): void
     {
         if ($this->repository->adaTabrakanTanggal(
             (int) $data['mobil_id'],
@@ -181,7 +180,7 @@ class TransaksiService
     {
         $mobil = $this->mobilRepository->find((int) $data['mobil_id']);
 
-        if (!$mobil) {
+        if (! $mobil) {
             return (float) $data['total_harga'];
         }
 

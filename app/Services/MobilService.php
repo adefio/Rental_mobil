@@ -7,9 +7,7 @@ use Illuminate\Support\Collection;
 
 class MobilService
 {
-    public function __construct(protected MobilRepositoryInterface $repository)
-    {
-    }
+    public function __construct(protected MobilRepositoryInterface $repository) {}
 
     public function paginatedData(): array
     {

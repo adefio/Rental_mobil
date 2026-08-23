@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\SequentialId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\SequentialId;
 
 class Transaksi extends Model
 {
     use HasFactory, SequentialId;
+
     protected $table = 'transaksi';
 
     protected $fillable = [
@@ -24,6 +25,7 @@ class Transaksi extends Model
 
     /**
      * Relasi ke model Pengguna
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function pengguna()
@@ -33,6 +35,7 @@ class Transaksi extends Model
 
     /**
      * Relasi ke model Mobil
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function mobil()
@@ -42,6 +45,7 @@ class Transaksi extends Model
 
     /**
      * Relasi ke model Maintenance (satu transaksi mungkin memiliki satu maintenance)
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function maintenance()

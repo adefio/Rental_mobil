@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class PengembalianController extends Controller
 {
-    public function __construct(protected PengembalianService $service)
-    {
-    }
+    public function __construct(protected PengembalianService $service) {}
 
     public function index()
     {

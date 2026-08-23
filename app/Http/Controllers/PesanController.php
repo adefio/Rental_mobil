@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class PesanController extends Controller
 {
-    public function __construct(protected PesanService $service)
-    {
-    }
+    public function __construct(protected PesanService $service) {}
 
     public function index()
     {

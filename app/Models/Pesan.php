@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\SequentialId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\SequentialId;
 
 class Pesan extends Model
 {
