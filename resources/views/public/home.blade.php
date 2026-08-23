@@ -87,58 +87,13 @@
         <div class="container">
             <div class="text-center mb-4">
                 <span class="section-label">Armada Kami</span>
-                <h2 class="section-title">Mobil Unggulan</h2>
-                <p class="text-muted">Pilihan mobil yang paling banyak disewa pelanggan kami.</p>
+                <h2 class="section-title">Mobil Unggulan & Terbaru</h2>
+                <p class="text-muted">Pilihan mobil terlaris dan unit terbaru yang siap disewa.</p>
             </div>
 
-            @if ($mobil_populer->count())
+            @if ($mobil_unggulan->count())
                 <div class="row g-4">
-                    @foreach ($mobil_populer as $m)
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="car-card h-100">
-                                <div class="car-card-top">
-                                    <div class="car-image">
-                                        @if (!empty($m->gambar) && isset($m->gambar[0]))
-                                            <img src="{{ gambar_url($m->gambar[0]) }}" alt="{{ $m->nama_mobil }}"
-                                                class="car-image-img" width="400" height="160" loading="lazy" decoding="async">
-                                        @else
-                                            <div class="car-image-placeholder"><x-icon name="car" /></div>
-                                        @endif
-                                    </div>
-                                    <span class="car-status {{ $m->status }}">{{ ucfirst($m->status) }}</span>
-                                </div>
-                                <div class="car-card-body d-flex flex-column flex-grow-1">
-                                    <h3 class="car-name">{{ $m->nama_mobil }}</h3>
-                                    <div class="car-meta flex-grow-1">
-                                        <span>{{ $m->merk }}</span>
-                                        <span>{{ $m->tahun }}</span>
-                                        <span>{{ $m->transaksi_count }}× disewa</span>
-                                    </div>
-                                    <div class="car-price">Rp {{ number_format($m->harga_sewa, 0, ',', '.') }}<span class="car-price-unit">/hari</span></div>
-                                    <a href="{{ url('sewa-mobil/' . $m->id) }}" class="btn btn-primary w-100">Sewa Sekarang</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <x-empty-state icon="car" title="Belum ada armada mobil"
-                    description="Cek kembali nanti untuk melihat armada kami." />
-            @endif
-        </div>
-    </section>
-
-    <section class="py-5" style="content-visibility: auto; contain-intrinsic-size: auto 600px;">
-        <div class="container">
-            <div class="text-center mb-4">
-                <span class="section-label">Armada Terbaru</span>
-                <h2 class="section-title">Unit Baru di Armada Kami</h2>
-                <p class="text-muted">Mobil terbaru yang baru bergabung dan siap disewa.</p>
-            </div>
-
-            @if ($mobil_baru->count())
-                <div class="row g-4">
-                    @foreach ($mobil_baru as $m)
+                    @foreach ($mobil_unggulan as $m)
                         <div class="col-sm-6 col-lg-3">
                             <div class="car-card h-100">
                                 <div class="car-card-top">

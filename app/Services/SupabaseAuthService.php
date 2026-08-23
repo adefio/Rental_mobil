@@ -78,6 +78,28 @@ class SupabaseAuthService
     }
 
     /**
+     * Perbarui metadata pengguna lewat Admin API.
+     *
+     * @return array user
+     *
+     * @throws SupabaseAuthException
+     */
+    public function updateAdminUser(string $uuid, array $data): array
+    {
+        if ($this->serviceRoleKey() === '') {
+            throw new SupabaseAuthException('SUPABASE_SERVICE_ROLE_KEY wajib diisi di .env.');
+        }
+
+        $response = Http::withHeaders($this->headers(true))
+            ->asJson()
+            ->put($this->baseUrl().'/auth/v1/admin/users/'.$uuid, $data);
+
+        $this->abortIfFailed($response);
+
+        return $response->json();
+    }
+
+    /**
      * Cari pengguna Supabase berdasarkan email (via Admin API).
      * Memerlukan service role key.
      */

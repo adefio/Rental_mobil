@@ -40,7 +40,7 @@ class SupabaseCreateUser extends Command
         $password = $this->option('password') ?: Str::random(16);
 
         try {
-            $userData = $auth->createAdminUser($email, $password, ['nama' => $name]);
+            $userData = $auth->createAdminUser($email, $password, ['nama' => $name, 'role' => $role]);
         } catch (SupabaseAuthException $e) {
             $existing = $auth->findAdminUserByEmail($email);
 
@@ -50,9 +50,14 @@ class SupabaseCreateUser extends Command
                 return self::FAILURE;
             }
 
-            $this->warn('Akun sudah ada di Supabase — hanya menyinkronkan ke database lokal.');
+            $this->warn('Akun sudah ada di Supabase — memperbarui metadata dan menyinkronkan ke database lokal.');
+
+            $auth->updateAdminUser($existing['id'], [
+                'user_metadata' => ['nama' => $name, 'role' => $role],
+            ]);
 
             $userData = $existing;
+            $userData['user_metadata'] = array_merge($userData['user_metadata'] ?? [], ['nama' => $name, 'role' => $role]);
         }
 
         $uuid = $userData['id'] ?? null;

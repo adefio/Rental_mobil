@@ -29,6 +29,7 @@ class RegisterController extends Controller
         try {
             $session = $this->supabase->signUp($data['email'], $data['password'], [
                 'nama' => $data['name'],
+                'role' => 'pelanggan',
             ]);
         } catch (SupabaseAuthException $e) {
             return back()

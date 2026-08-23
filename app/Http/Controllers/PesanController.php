@@ -27,7 +27,7 @@ class PesanController extends Controller
 
         $this->service->tandaiDibaca((int) $id, $dibaca);
 
-        return back()->with('pesan', $dibaca
+        return redirect()->route('admin.pesan')->with('pesan', $dibaca
             ? 'Pesan ditandai sudah dibaca.'
             : 'Pesan ditandai belum dibaca.');
     }
@@ -36,6 +36,6 @@ class PesanController extends Controller
     {
         $this->service->delete((int) $id);
 
-        return back()->with('pesan', 'Pesan berhasil dihapus.');
+        return redirect()->route('admin.pesan')->with('pesan', 'Pesan berhasil dihapus.');
     }
 }

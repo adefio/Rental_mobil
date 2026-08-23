@@ -219,6 +219,7 @@ class SupabaseGuard implements Guard
         $email = $data['email'] ?? null;
         $metadata = $data['user_metadata'] ?? [];
         $name = $metadata['nama'] ?? $metadata['name'] ?? null;
+        $role = $metadata['role'] ?? 'pelanggan';
 
         if (! $name && $email) {
             $name = ucwords(str_replace(['.', '_', '-'], ' ', (string) (strstr($email, '@', true) ?: $email)));
@@ -242,7 +243,7 @@ class SupabaseGuard implements Guard
                 'nama' => $name ?: $user->name,
                 'email' => $email,
                 'password' => null,
-                'role' => 'pelanggan',
+                'role' => $role,
             ]);
             $pengguna->save();
         }
