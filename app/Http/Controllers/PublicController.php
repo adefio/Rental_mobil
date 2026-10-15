@@ -199,7 +199,7 @@ class PublicController extends Controller
             }
         }
 
-        $user->pengguna()->update($penggunaData);
+        $user->pengguna()->updateOrCreate(['user_id' => $user->id], $penggunaData);
 
         return back()->with('pesan', 'Pengaturan akun berhasil diperbarui.');
     }

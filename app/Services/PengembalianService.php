@@ -60,13 +60,16 @@ class PengembalianService
     public function update(int $id, array $data)
     {
         $pengembalian = $this->repository->findOrFail($id);
+        $oldTransaksiId = (int) $pengembalian->transaksi_id;
 
         $data = $this->resolveDenda($data);
 
         $pengembalian = $this->repository->update($id, $data);
+        $newTransaksiId = (int) $pengembalian->transaksi_id;
 
-        if ((int) $data['transaksi_id'] !== (int) $pengembalian->transaksi_id) {
-            $this->tutupTransaksi((int) $data['transaksi_id']);
+        if ($newTransaksiId !== $oldTransaksiId) {
+            $this->bukaKembaliTransaksi($oldTransaksiId);
+            $this->tutupTransaksi($newTransaksiId);
         }
 
         return $pengembalian;

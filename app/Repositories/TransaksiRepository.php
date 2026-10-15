@@ -18,11 +18,6 @@ class TransaksiRepository extends EloquentRepository implements TransaksiReposit
         return ['pengguna', 'mobil'];
     }
 
-    public function pluckTransaksi(string $value = 'id', string $key = 'id'): \Illuminate\Support\Collection
-    {
-        return $this->query()->pluck($value, $key);
-    }
-
     public function terbaru(int $limit = 5)
     {
         return $this->query()

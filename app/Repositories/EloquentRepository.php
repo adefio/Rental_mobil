@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 abstract class EloquentRepository implements RepositoryInterface
 {
@@ -55,7 +56,12 @@ abstract class EloquentRepository implements RepositoryInterface
 
     public function create(array $attributes): Model
     {
-        return $this->model->create($attributes);
+        try {
+            return $this->model->create($attributes);
+        } catch (UniqueConstraintViolationException $e) {
+            // ponytail: race pada gap-ID SequentialId, coba ulang sekali
+            return $this->model->create($attributes);
+        }
     }
 
     public function update(int $id, array $attributes): Model
@@ -78,28 +84,8 @@ abstract class EloquentRepository implements RepositoryInterface
         return $this->query()->count();
     }
 
-    public function countWhere(string $column, $value): int
-    {
-        return $this->query()->where($column, $value)->count();
-    }
-
-    public function sum(string $column): float
-    {
-        return (float) $this->query()->sum($column);
-    }
-
-    public function sumWhere(string $column, $value, string $sumColumn): float
-    {
-        return (float) $this->query()->where($column, $value)->sum($sumColumn);
-    }
-
     public function sumWhereIn(string $column, array $values, string $sumColumn): float
     {
         return (float) $this->query()->whereIn($column, $values)->sum($sumColumn);
-    }
-
-    public function pluck(string $value, string $key): Collection
-    {
-        return $this->query()->pluck($value, $key);
     }
 }

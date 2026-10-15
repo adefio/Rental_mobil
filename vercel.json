@@ -3,7 +3,8 @@
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.7.4",
-            "maxDuration": 60
+            "maxDuration": 60,
+            "regions": ["icn1"]
         }
     },
     "routes": [
@@ -27,7 +28,7 @@
         "STORAGE_DISK": "supabase",
         "DB_CONNECTION": "pgsql",
         "DB_HOST": "aws-0-ap-northeast-2.pooler.supabase.com",
-        "DB_PORT": "5432",
+        "DB_PORT": "6543",
         "DB_DATABASE": "postgres",
         "DB_USERNAME": "postgres.yieiodexjlvghufrsoku",
         "DB_SSLMODE": "require"

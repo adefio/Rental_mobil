@@ -51,14 +51,4 @@ class Pengembalian extends Model
 
         return 0; // Tidak ada denda jika tidak terlambat
     }
-
-    /**
-     * Fungsi untuk menghitung total denda (denda keterlambatan + biaya kerusakan)
-     *
-     * @return float
-     */
-    public function hitungTotalDenda()
-    {
-        return ($this->denda_telat ?? 0) + ($this->biaya_kerusakan ?? 0);
-    }
 }
